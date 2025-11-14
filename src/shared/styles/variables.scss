@@ -1,0 +1,18 @@
+@font-face {
+    font-family: 'Raleway';
+    src: url('./fonts/Raleway-ExtraLight.woff2') format('woff2');
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root{
+    --header-height: 90px;
+    --color-dark: #35155D;
+    --color-light: #FFFFFF;
+    --font-family-base: 'Raleway', sans-serif;
+    --border: 255, 16, 240;
+    --background: 10, 10, 26;
+}
+
+$color-pink: rgb(255, 16, 240);

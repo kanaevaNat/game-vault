@@ -1,0 +1,64 @@
+@import './reset.scss';
+@import './variables.scss';
+
+* {
+  text-decoration: none;
+  letter-spacing: 2px;
+}
+
+a {
+  color: var(--color-light);
+}
+
+body {
+  font-family: var(--font-family-base);
+  font-size: 13px;
+  font-weight: 700;
+  min-height: 100vh;
+  position: relative;
+  background-color: var(--color-dark);
+  color: var(--color-light);
+}
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40vh;
+  background:
+          linear-gradient(to top,
+                  var(--color-dark) 0%,
+                  rgba(10, 10, 26, 0) 100%
+          ),
+          url("/stars-background.jpg") center top / cover no-repeat;
+  z-index: -1;
+}
+
+body::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40vh;
+  background:
+          linear-gradient(to bottom,
+                  var(--color-dark) 0%,
+                  rgba(10, 10, 26, 0) 100%
+          ),
+          url("/pink-horizon-background.jpg") center bottom / cover no-repeat;
+  z-index: -1;
+}
+.button {
+  justify-content: center;
+  text-align: center;
+  display: inline-flex;
+  height: 38px;
+  align-items: center;
+  padding-inline: 26px;
+  line-height: 2;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-decoration: none;
+}

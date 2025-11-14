@@ -1,0 +1,32 @@
+@mixin neon-effect-icon($color) {
+  filter: drop-shadow(0 0 10px $color);
+  color: $color;
+
+  transition: all 0.3s ease;
+
+  &:hover {
+    filter: drop-shadow(0 0 15px $color) brightness(1.1);
+  }
+}
+
+@mixin neon-outline-button($color) {
+  background: transparent;
+  border: 2px solid $color;
+  border-radius: 10px;
+  color: $color;
+
+  outline: none;
+
+  transition: all 0.3s ease;
+
+  box-shadow: 0 0 8px $color, 0 0 16px $color;
+
+  &:hover {
+    background: rgba($color, 0.05);
+    box-shadow: 0 0 12px $color, 0 0 24px $color, 0 0 32px $color;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
