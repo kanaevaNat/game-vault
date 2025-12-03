@@ -6,14 +6,19 @@ const router = createRouter(
         routes: [
             {
                 path: '/',
-                component: () => import('@/shared/ui/MainLayout.vue'),
+                component: () => import('@/shared/components/MainLayout.vue'),
                 children: [
                     {
                         path: '',
                         component: {
-                            template: '<div>Главная страница — список игр</div>'
+                            template: '<div style="padding: 100px">Главная страница — список игр</div>'
                         },
                         name: 'home'
+                    },
+                    {
+                        path: 'games',
+                        name: 'games',
+                        component: () => import('@/entities/games/components/Grid.vue')
                     }
                 ]
             },

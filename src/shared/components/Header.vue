@@ -6,7 +6,7 @@ const isMenuOpen = ref(false)
 </script>
 
 <template>
-  <header class="header" :class="{ 'is-open': isMenuOpen }">
+  <header class="header glass" :class="{ 'is-open': isMenuOpen }">
     <a href="/" class="header-logo">
       <div class="icon">
         <Gamepad :size="50"></Gamepad>
@@ -28,13 +28,13 @@ const isMenuOpen = ref(false)
     <nav class="header-menu" id="header-menu">
       <ul class="header-menu-list">
         <li class="header-menu-item">
-          <a href="/" class="header-menu-link">Главная</a>
+          <router-link :to="{ name: 'home'}" class="header-menu-link">Главная</router-link>
         </li>
         <li class="header-menu-item">
-          <a href="/" class="header-menu-link">Игры</a>
+          <router-link :to="{ name: 'games'}" class="header-menu-link">Игры</router-link>
         </li>
         <li class="header-menu-item">
-          <a href="/" class="header-menu-link">Новости</a>
+          <router-link :to="{ name: 'games'}" class="header-menu-link">Новости</router-link>
         </li>
       </ul>
     </nav>
@@ -51,8 +51,6 @@ const isMenuOpen = ref(false)
   top: 0;
   left: 0;
   right: 0;
-  backdrop-filter: blur(12px);
-  background-color: rgba(var(--background), 0.7);
   z-index: 1;
   padding-inline: 32px;
   min-height: var(--header-height);
