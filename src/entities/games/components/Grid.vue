@@ -30,7 +30,7 @@ onMounted(() => {
 .games-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1.5rem;
+  gap: 4.5rem;
   padding: 80px;
   align-items: stretch;
 }

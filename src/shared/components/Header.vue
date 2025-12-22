@@ -1,7 +1,10 @@
 <script setup>
 import Gamepad from "@/shared/icons/Gamepad.vue";
 import { ref } from 'vue'
+import {useAdminStore} from "@/entities/admin/store.js";
+import LoginModal from "@/entities/admin/components/LoginModal.vue";
 
+const adminStore = useAdminStore();
 const isMenuOpen = ref(false)
 </script>
 
@@ -40,8 +43,9 @@ const isMenuOpen = ref(false)
     </nav>
 
     <div class="header-actions">
-      <button class="button" type="button">Вход</button>
+      <button @click="adminStore.openLogin" class="button" type="button">Вход</button>
     </div>
+    <LoginModal/>
   </header>
 </template>
 
