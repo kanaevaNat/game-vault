@@ -9,15 +9,15 @@ const isMenuOpen = ref(false)
 </script>
 
 <template>
-  <header class="header glass" :class="{ 'is-open': isMenuOpen }">
-    <a href="/" class="header-logo">
-      <div class="icon">
+  <header class="header glass" :class="{ 'header_is-open': isMenuOpen }">
+    <a href="/" class="header__logo">
+      <div class="header__icon">
         <Gamepad :size="50"></Gamepad>
       </div>
     </a>
 
     <button
-        class="header-burger"
+        class="header__burger"
         @click="isMenuOpen = !isMenuOpen"
         :aria-expanded="isMenuOpen"
         aria-controls="header-menu"
@@ -28,21 +28,21 @@ const isMenuOpen = ref(false)
       <span></span>
     </button>
 
-    <nav class="header-menu" id="header-menu">
-      <ul class="header-menu-list">
-        <li class="header-menu-item">
-          <router-link :to="{ name: 'home'}" class="header-menu-link">Главная</router-link>
+    <nav class="header__menu" id="header-menu">
+      <ul class="header__menu-list">
+        <li class="header__menu-item">
+          <router-link :to="{ name: 'home'}" class="header__menu-link">Главная</router-link>
         </li>
-        <li class="header-menu-item">
-          <router-link :to="{ name: 'games'}" class="header-menu-link">Игры</router-link>
+        <li class="header__menu-item">
+          <router-link :to="{ name: 'games'}" class="header__menu-link">Игры</router-link>
         </li>
-        <li class="header-menu-item">
-          <router-link :to="{ name: 'games'}" class="header-menu-link">Новости</router-link>
+        <li class="header__menu-item">
+          <router-link :to="{ name: 'games'}" class="header__menu-link">Новости</router-link>
         </li>
       </ul>
     </nav>
 
-    <div class="header-actions">
+    <div class="header__actions">
       <button @click="adminStore.openLogin" class="button" type="button">Вход</button>
     </div>
     <LoginModal/>
@@ -63,7 +63,7 @@ const isMenuOpen = ref(false)
   align-items: center;
   transition: all 0.3s ease;
 
-  &-menu {
+  &__menu {
     &-list {
       display: flex;
       gap: 50px;
@@ -77,41 +77,42 @@ const isMenuOpen = ref(false)
       gap: 7px;
     }
   }
+  &__burger {
+       display: none;
+       flex-direction: column;
+       justify-content: space-around;
+       width: 30px;
+       height: 24px;
+       background: transparent;
+       border: none;
+       cursor: pointer;
+       z-index: 1001;
+
+       span {
+         width: 100%;
+         height: 2px;
+         background: var(--color-light);
+         border-radius: 2px;
+         transition: all 0.3s ease;
+         transform-origin: center;
+       }
+     }
 }
 
-.header-burger {
-  display: none;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 30px;
-  height: 24px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  z-index: 1001;
 
-  span {
-    width: 100%;
-    height: 2px;
-    background: var(--color-light);
-    border-radius: 2px;
-    transition: all 0.3s ease;
-    transform-origin: center;
-  }
-}
 
-.header.is-open {
-  .header-burger {
-    span:nth-child(1) {
-      transform: rotate(50deg) translate(5px, 5px);
+  .header_is-open {
+    .header__burger {
+      span:nth-child(1) {
+        transform: rotate(50deg) translate(5px, 5px);
+      }
+      span:nth-child(2) {
+        opacity: 0;
+      }
+      span:nth-child(3) {
+        transform: rotate(-50deg) translate(5px, -5px);
+      }
     }
-    span:nth-child(2) {
-      opacity: 0;
-    }
-    span:nth-child(3) {
-      transform: rotate(-50deg) translate(5px, -5px);
-    }
-  }
 }
 
 .icon {
@@ -130,11 +131,11 @@ const isMenuOpen = ref(false)
     grid-template-areas: "logo menu actions";
     gap: 20px;
 
-    &-logo {
+    &__logo {
       grid-area: logo;
     }
 
-    &-menu {
+    &__menu {
       grid-area: menu;
       justify-self: center;
 
@@ -143,12 +144,12 @@ const isMenuOpen = ref(false)
       }
     }
 
-    &-actions {
+    &__actions {
       grid-area: actions;
       justify-self: end;
     }
 
-    &-burger {
+    &__burger {
       display: none !important;
     }
   }
@@ -166,18 +167,18 @@ const isMenuOpen = ref(false)
     align-items: start;
     transition: grid-template-rows 0.35s cubic-bezier(0.3, 0, 0.7, 1);
 
-    &-logo {
+    &__logo {
       grid-area: logo;
       align-self: center;
     }
 
-    &-burger {
+    &__burger {
       grid-area: burger;
       display: flex;
       align-self: center;
     }
 
-    &-menu {
+    &__menu {
       grid-area: menu;
       overflow: hidden;
       padding: 0 20px;
@@ -196,7 +197,7 @@ const isMenuOpen = ref(false)
       }
     }
 
-    &-actions {
+    &__actions {
       grid-area: actions;
       overflow: hidden;
       display: flex;
@@ -208,18 +209,18 @@ const isMenuOpen = ref(false)
       }
     }
 
-    &.is-open {
+    &_is-open {
       grid-template-rows: var(--header-height) 1fr auto;
 
-      .header-menu,
-      .header-actions {
+      .header__menu,
+      .header__actions {
         opacity: 1;
         visibility: visible;
       }
     }
 
-    &-menu,
-    &-actions {
+    &__menu,
+    &__actions {
       opacity: 0;
       visibility: hidden;
     }

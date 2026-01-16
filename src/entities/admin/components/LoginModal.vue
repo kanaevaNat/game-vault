@@ -21,11 +21,11 @@ const adminStore = useAdminStore();
         &times;
       </button>
       <form class="login-modal__form">
-        <div class="login-modal__form-div">
-          <input class="login-modal__form-input" type="text"/>
-          <input class="login-modal__form-input" type="password"/>
+        <div class="login-modal__fields">
+          <input class="login-modal__field" type="text"/>
+          <input class="login-modal__field" type="password"/>
         </div>
-        <button class="login-modal__form-submit">Войти</button>
+        <button class="login-modal__submit">Войти</button>
       </form>
     </div>
   </div>
@@ -45,7 +45,6 @@ const adminStore = useAdminStore();
   align-items: center;
 
   &__content{
-
     position: relative;
     width: 90%;
     max-width: 400px;
@@ -57,35 +56,27 @@ const adminStore = useAdminStore();
     @include neon-outline-button($color-pink);
     background-color: var(--color-input);
   }
+  &__fields{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 
-  &__form{
-
-    &-div{
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-
-    }
-
-    &-input{
-      padding: 0.25rem;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      font-size: 1rem;
-      color: var(--color-light);
-      background-color: var(--color-input);
-      border-color: var(--color-light);
-    }
-
-    &-submit{
+  }
+  &__field{
+    padding: 0.25rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    color: var(--color-light);
+    background-color: var(--color-input);
+    border-color: var(--color-light);
+  }
+  &__submit{
       margin-top: 2rem;
       padding: 0.6rem 2rem;
       @include neon-outline-button($color-pink);
-    }
   }
-
-
   &__close{
     position: absolute;
     top: 12px;
