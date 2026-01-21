@@ -1,8 +1,16 @@
 <script setup>
+import {useAdminStore} from "@/entities/admin/store.js"
 
-import {useAdminStore} from "@/entities/admin/store.js";
+const adminStore = useAdminStore()
 
-const adminStore = useAdminStore();
+const close = () => {
+  adminStore.resetLoginForm()
+  adminStore.closeLogin()
+}
+
+const submit = async () => {
+  await adminStore.login()
+}
 </script>
 
 <template>
@@ -10,22 +18,38 @@ const adminStore = useAdminStore();
   <div
       v-if="adminStore.isLoginModal"
       class="login-modal"
-      @click="adminStore.closeLogin"
+      @click="close"
   >
     <div class="login-modal__content" @click.stop>
       <h2 class="login-modal__title">Авторизация</h2>
       <button
-        @click="adminStore.closeLogin"
+        @click="close"
         class="login-modal__close"
       >
         &times;
       </button>
-      <form class="login-modal__form">
+      <form class="login-modal__form" @submit.prevent="submit">
         <div class="login-modal__fields">
-          <input class="login-modal__field" type="text"/>
-          <input class="login-modal__field" type="password"/>
+          <input
+              v-model="adminStore.loginForm.username"
+              class="login-modal__field"
+              type="text"
+              placeholder="Логин"
+          />
+          <input
+              v-model="adminStore.loginForm.password"
+              class="login-modal__field"
+              type="password"
+              placeholder="Пароль"
+          />
         </div>
-        <button class="login-modal__submit">Войти</button>
+        <div v-if="adminStore.error">{{adminStore.error}}</div>
+        <button
+            type="submit"
+            class="login-modal__submit"
+        >
+          Войти
+        </button>
       </form>
     </div>
   </div>
