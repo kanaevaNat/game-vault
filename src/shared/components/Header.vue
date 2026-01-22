@@ -6,6 +6,8 @@ import LoginModal from "@/entities/admin/components/LoginModal.vue";
 
 const adminStore = useAdminStore();
 const isMenuOpen = ref(false)
+
+
 </script>
 
 <template>
@@ -43,7 +45,23 @@ const isMenuOpen = ref(false)
     </nav>
 
     <div class="header__actions">
-      <button @click="adminStore.openLogin" class="button" type="button">Вход</button>
+      <span v-if="adminStore.isAuthenticated" class="header__user-greeting">Hello, {{ adminStore.user?.username }}</span>
+      <button
+          v-if="adminStore.isAuthenticated"
+          @click="adminStore.logout"
+          class="button"
+          type="button"
+      >
+        Выход
+      </button>
+      <button
+          v-else
+          @click="adminStore.openLogin"
+          class="button"
+          type="button"
+      >
+        Вход
+      </button>
     </div>
     <LoginModal/>
   </header>
@@ -78,15 +96,15 @@ const isMenuOpen = ref(false)
     }
   }
   &__burger {
-       display: none;
-       flex-direction: column;
-       justify-content: space-around;
-       width: 30px;
-       height: 24px;
-       background: transparent;
-       border: none;
-       cursor: pointer;
-       z-index: 1001;
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 24px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 1001;
 
        span {
          width: 100%;
@@ -129,7 +147,7 @@ const isMenuOpen = ref(false)
     grid-template-columns: auto 1fr auto;
     grid-template-rows: 1fr;
     grid-template-areas: "logo menu actions";
-    gap: 20px;
+    gap: 50px;
 
     &__logo {
       grid-area: logo;
@@ -147,6 +165,10 @@ const isMenuOpen = ref(false)
     &__actions {
       grid-area: actions;
       justify-self: end;
+    }
+
+    &__user-greeting{
+      margin-right: 20px;
     }
 
     &__burger {
@@ -201,8 +223,9 @@ const isMenuOpen = ref(false)
       grid-area: actions;
       overflow: hidden;
       display: flex;
-      justify-content: center;
-      padding: 0 20px;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
 
       .button {
         margin: 20px 0;
