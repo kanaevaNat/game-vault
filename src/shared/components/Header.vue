@@ -41,6 +41,15 @@ const isMenuOpen = ref(false)
         <li class="header__menu-item">
           <router-link :to="{ name: 'games'}" class="header__menu-link">Новости</router-link>
         </li>
+        <li class="header__menu-item">
+          <router-link
+              v-if="adminStore.isAuthenticated"
+              :to="{ name: 'admin'}"
+              class="header__menu-link"
+          >
+            Админ
+          </router-link>
+        </li>
       </ul>
     </nav>
 
@@ -76,7 +85,6 @@ const isMenuOpen = ref(false)
   z-index: 1;
   padding-inline: 32px;
   min-height: var(--header-height);
-
   display: grid;
   align-items: center;
   transition: all 0.3s ease;
@@ -85,7 +93,7 @@ const isMenuOpen = ref(false)
     &-list {
       display: flex;
       gap: 50px;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
     }
 
     &-link {
@@ -100,7 +108,7 @@ const isMenuOpen = ref(false)
     flex-direction: column;
     justify-content: space-around;
     width: 30px;
-    height: 24px;
+    height: 20px;
     background: transparent;
     border: none;
     cursor: pointer;
@@ -115,9 +123,10 @@ const isMenuOpen = ref(false)
          transform-origin: center;
        }
      }
+  &__user-greeting{
+    margin-right: 20px;
+  }
 }
-
-
 
   .header_is-open {
     .header__burger {
@@ -141,13 +150,41 @@ const isMenuOpen = ref(false)
   @include neon-outline-button($color-pink);
 
 }
+@media(min-width: 1000px) {
+  .header {
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: "logo . actions";
+    justify-items: start;
 
-@media (min-width: 769px) {
+    &__logo {
+      grid-area: logo;
+    }
+
+    &__menu {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+
+      &-list {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+      }
+    }
+
+    &__actions {
+      grid-area: actions;
+      justify-self: end;
+    }
+  }
+}
+@media (800px <= width <= 1000px) {
   .header {
     grid-template-columns: auto 1fr auto;
     grid-template-rows: 1fr;
     grid-template-areas: "logo menu actions";
-    gap: 50px;
+    gap: 20px;
 
     &__logo {
       grid-area: logo;
@@ -159,6 +196,7 @@ const isMenuOpen = ref(false)
 
       &-list {
         justify-content: center;
+        gap: 20px;
       }
     }
 
@@ -167,55 +205,44 @@ const isMenuOpen = ref(false)
       justify-self: end;
     }
 
-    &__user-greeting{
-      margin-right: 20px;
-    }
-
     &__burger {
       display: none !important;
     }
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 800px) {
   .header {
     grid-template-columns: 1fr auto;
-    grid-template-rows: var(--header-height) 0fr 0fr;
+    grid-template-rows: var(--header-mobile-height) 0fr 0fr;
     grid-template-areas:
       "logo burger"
       "menu menu"
       "actions actions";
     gap: 0;
-    align-items: start;
-    transition: grid-template-rows 0.35s cubic-bezier(0.3, 0, 0.7, 1);
+    align-items: center;
+    min-height: var(--header-mobile-height);
+    font-size: 0.8rem;
 
     &__logo {
       grid-area: logo;
-      align-self: center;
     }
 
     &__burger {
       grid-area: burger;
       display: flex;
-      align-self: center;
     }
 
     &__menu {
       grid-area: menu;
       overflow: hidden;
-      padding: 0 20px;
       display: flex;
       justify-content: center;
 
       &-list {
         flex-direction: column;
-        gap: 15px;
+        gap: 30px;
         align-items: center;
-        padding: 20px 0;
-      }
-
-      &-link {
-        padding: 10px 0;
       }
     }
 
@@ -225,20 +252,23 @@ const isMenuOpen = ref(false)
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px 0;
-
-      .button {
-        margin: 20px 0;
-      }
+      gap: 30px;
     }
 
+    .button {
+      margin-bottom: 20px;
+    }
+    &__user-greeting{
+      margin-top: 30px;
+      margin-right: 0;
+    }
     &_is-open {
-      grid-template-rows: var(--header-height) 1fr auto;
-
+      grid-template-rows: var(--header-mobile-height) 1fr auto;
       .header__menu,
       .header__actions {
         opacity: 1;
         visibility: visible;
+        transform: translateY(0);
       }
     }
 
@@ -246,6 +276,11 @@ const isMenuOpen = ref(false)
     &__actions {
       opacity: 0;
       visibility: hidden;
+      transform: translateY(-100px);
+      transition:
+          opacity 0.2s ease,
+          visibility 0.3s ease,
+          transform 0.3s ease;
     }
   }
 }

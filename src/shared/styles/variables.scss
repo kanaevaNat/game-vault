@@ -1,17 +1,17 @@
 @font-face {
-    font-family: 'Raleway';
-    src: url('./fonts/Raleway-ExtraLight.woff2') format('woff2');
-    font-weight: 200;
-    font-style: normal;
-    font-display: swap;
+    font-family: 'Tektur';
+    src: url('../../../public/fonts/Tektur-Regular.woff2') format('woff2');
+    font-weight: 400;
+  font-display: swap;
 }
 
 :root{
     --header-height: 90px;
+    --header-mobile-height: 70px;
     --color-input-text: #9d8cbd;
-    --color-dark: #35155D;
+    --color-dark: #27104c;
     --color-light: #FFFFFF;
-    --font-family-base: 'Raleway', sans-serif;
+    --font-family-base: 'Tektur', sans-serif;
     --border: 255, 16, 240;
     --background: 10, 10, 26;
     --color-input: #222225;
