@@ -1,4 +1,5 @@
 import {createRouter, createWebHistory} from 'vue-router'
+import NotFoundPage from "@/shared/components/NotFoundPage.vue";
 
 const router = createRouter(
     {
@@ -10,18 +11,39 @@ const router = createRouter(
                 children: [
                     {
                         path: '',
+                        name: 'home',
                         component: {
                             template: '<div style="padding: 100px">Главная страница — список игр</div>'
-                        },
-                        name: 'home'
+                        }
                     },
                     {
                         path: 'games',
                         name: 'games',
                         component: () => import('@/entities/games/components/Grid.vue')
-                    }
+                    },
+                    {
+                        path: '/admin',
+                        name: 'admin',
+                        component: () => import('@/entities/admin/components/AdminView.vue'),
+                        children: [
+                            {
+                                path: '',
+                                redirect: '/admin/countries'
+                            },
+                            {
+                                path: 'countries',
+                                name: 'countries',
+                                component: () => import('@/entities/country/CountriesList.vue')
+                            }
+                        ]
+                    },
+                    {
+                        path: '/:pathMatch(.*)*',
+                        name: 'not-found',
+                        component: NotFoundPage
+                    },
                 ]
-            },
+            }
         ]
     }
 )

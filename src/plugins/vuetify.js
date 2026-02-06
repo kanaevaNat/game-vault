@@ -1,5 +1,14 @@
 import { createVuetify } from 'vuetify'
+import '@mdi/font/css/materialdesignicons.css'
+import { aliases, mdi } from 'vuetify/iconsets/mdi'
 import {
+    VApp,
+    VMain,
+    VTable,
+    VNavigationDrawer,
+    VList,
+    VListItem,
+    VListItemTitle,
     VBtn,
     VTextField,
     VTextarea,
@@ -13,6 +22,13 @@ import {
 
 export default createVuetify({
     components: {
+        VApp,
+        VMain,
+        VTable,
+        VNavigationDrawer,
+        VList,
+        VListItem,
+        VListItemTitle,
         VBtn,
         VTextField,
         VTextarea,
@@ -24,15 +40,16 @@ export default createVuetify({
         VSnackbar
     },
     theme: {
-        defaultTheme: 'light', // или 'custom'
-        themes: {
-            light: {
-                dark: false,
-                colors: {}
-            }
-        }
+        defaultTheme: 'dark',
     },
     defaults: {
         global: { ripple: false }
+    },
+    icons: {
+        defaultSet: 'mdi',
+        aliases,
+        sets: {
+            mdi
+        }
     }
 })
