@@ -2,10 +2,7 @@
 import {ref} from "vue";
 
 const props = defineProps({
-  items: {
-    type: Array,
-    required:true
-  },
+  items: { type: Array, required:true },
   columns: {
     type: Array,
     required: true,
@@ -13,10 +10,7 @@ const props = defineProps({
       return value.every(col => col.key && col.label)
     }
   },
-  onDelete: {
-    type:Function,
-    required:true
-  }
+  store: { type:Object, required:true }
 })
 const dialogDelete = ref(false)
 const deleteItem = ref(null)
@@ -28,7 +22,7 @@ const confirmDelete = (item) => {
 
 const handleDelete = async () => {
   try {
-    await props.onDelete(deleteItem.value)
+    await props.store.deleteItem(deleteItem.value.id)
     dialogDelete.value = false
     deleteItem.value = null
   } catch (error) {
@@ -56,6 +50,7 @@ const handleDelete = async () => {
         <v-btn
           icon="mdi-pencil"
           variant="text"
+          @click="$emit('edit', item)"
         ></v-btn>
         <v-btn
             icon="mdi-delete"
