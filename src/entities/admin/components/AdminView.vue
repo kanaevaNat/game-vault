@@ -3,6 +3,7 @@ import { RouterView } from 'vue-router'
 
 const items = [
   { title: 'Страны', name: 'countries' },
+  { title: 'Студии', name: 'studios'}
 ]
 </script>
 

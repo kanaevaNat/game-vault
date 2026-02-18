@@ -34,6 +34,11 @@ const router = createRouter(
                                 path: 'countries',
                                 name: 'countries',
                                 component: () => import('@/entities/country/CountriesList.vue')
+                            },
+                            {
+                                path: 'studios',
+                                name: 'studios',
+                                component: () => import('@/entities/studio/StudiosList.vue')
                             }
                         ]
                     },
