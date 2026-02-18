@@ -7,7 +7,7 @@ export const useStudiosStore = defineStore('studio', {
         items: [],
         loading: false,
         error: null,
-        columns: [
+        headers: [
             {key: 'id', title: 'ID'},
             {key: 'name', title: 'Название'},
             {key: 'country_details.name', title: 'Страна'}

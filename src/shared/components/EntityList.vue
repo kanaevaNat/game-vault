@@ -76,7 +76,7 @@ const handleCloseForm = () => {
 
     <EntityTable
         :items="store.items"
-        :headers="store.columns"
+        :headers="store.headers"
         :store="store"
         v-model:search="search"
         v-model:page="page"

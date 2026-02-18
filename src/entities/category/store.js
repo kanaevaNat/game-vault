@@ -1,19 +1,19 @@
-import { defineStore } from 'pinia'
+import {defineStore} from "pinia";
 import api from '@/shared/api/axios.js'
 
-export const useCountriesStore = defineStore('country', {
+export const useCategoriesStore = defineStore('category', {
     state: () => ({
         items: [],
         loading: false,
         error: null,
         headers: [
-            { key: 'id', title: 'ID', sortable: true },
-            { key: 'name', title: 'Название', sortable: true }
+            {key: 'id', title: 'ID', sortable: true},
+            {key: 'name', title: 'Название', sortable: true}
         ],
         formFields: [
             {
                 key: 'name',
-                label: 'Название страны',
+                label: 'Название категории',
                 type: 'text',
                 validation: {
                     required: true,
@@ -22,26 +22,25 @@ export const useCountriesStore = defineStore('country', {
                 }
             }
         ],
-        tableState: null,
+        tableState: null
     }),
-
     actions: {
         async fetchItems() {
             this.loading = true
             this.error = null
             try {
-                const response = await api.get('/countries/')
+                const response = await api.get('/categories/')
                 this.items = response.data
             } catch (error) {
                 this.error = error.message
-                console.error('Ошибка загрузки стран:', error)
+                console.error('Ошибка загрузки категорий:', error)
             } finally {
                 this.loading = false
             }
         },
         async deleteItem(id) {
             try {
-                await api.delete(`/countries/${id}/`)
+                await api.delete(`/categories/${id}/`)
                 this.items = this.items.filter(c => c.id !== id)
             } catch (error) {
                 console.error('Ошибка удаления:', error)
@@ -49,13 +48,13 @@ export const useCountriesStore = defineStore('country', {
             }
         },
         async createItem(data) {
-            const response = await api.post('/countries/', data)
+            const response = await api.post('/categories/', data)
             this.items.push(response.data)
             return response.data
         },
         async updateItem(id, data) {
             try {
-                const response = await api.put(`/countries/${id}/`, data)
+                const response = await api.put(`/categories/${id}/`, data)
                 const index = this.items.findIndex(item => item.id === id)
                 if (index !== -1) {
                     this.items[index] = response.data
