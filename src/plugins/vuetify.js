@@ -4,6 +4,7 @@ import { aliases, mdi } from 'vuetify/iconsets/mdi'
 import {
     VApp,
     VMain,
+    VDataTable,
     VTable,
     VNavigationDrawer,
     VList,
@@ -24,6 +25,7 @@ export default createVuetify({
     components: {
         VApp,
         VMain,
+        VDataTable,
         VTable,
         VNavigationDrawer,
         VList,
