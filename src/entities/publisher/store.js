@@ -1,8 +1,9 @@
 import {defineStore} from "pinia";
 import api from "@/shared/api/axios.js";
 import {useCountriesStore} from "@/entities/country/store.js";
+import { formatDateForApi } from "@/shared/utils/dateFormatter.js";
 
-export const useStudiosStore = defineStore('studio', {
+export const usePublishersStore = defineStore('publisher', {
     state: () => ({
         items: [],
         loading: false,
@@ -10,12 +11,13 @@ export const useStudiosStore = defineStore('studio', {
         headers: [
             {key: 'id', title: 'ID'},
             {key: 'name', title: 'Название'},
-            {key: 'country_details.name', title: 'Страна'}
+            {key: 'country_details.name', title: 'Страна'},
+            {key: 'founded', title: 'Дата основания'}
         ],
         formFields: [
             {
                 key: 'name',
-                label: 'Название студии',
+                label: 'Название издателя',
                 type: 'text',
                 validation: {
                     required: true,
@@ -33,12 +35,21 @@ export const useStudiosStore = defineStore('studio', {
                 validation: {
                     required: true
                 }
-            }],
+            },
+            {
+                key: 'founded',
+                label: 'Дата основания',
+                type: 'date',
+                validation: {
+                    required: true
+                }
+            }
+        ],
     }),
     actions: {
         async fetchItems() {
             try {
-                const response = await api.get('/studios/')
+                const response = await api.get('/publisher/')
                 this.items = response.data
                 const countriesStore = useCountriesStore()
                 if (countriesStore.items.length === 0) {
@@ -49,24 +60,31 @@ export const useStudiosStore = defineStore('studio', {
                     countryField.items = countriesStore.items
                 }
             } catch (error) {
-                console.error('Ошибка загрузки студий:', error)
+                console.error('Ошибка загрузки издателей:', error)
             }
         },
         async createItem(data) {
-            const response = await api.post('/studios/', data)
+            const payload = {
+                ...data,
+                founded: formatDateForApi(data.founded)
+            }
+            const response = await api.post('/publisher/', payload)
             this.items.push(response.data)
         },
         async updateItem(id, data) {
-            const response = await api.put(`/studios/${id}/`, data)
+            const payload = {
+                ...data,
+                founded: formatDateForApi(data.founded)
+            }
+            const response = await api.put(`/publisher/${id}/`, payload)
             const index = this.items.findIndex(item => item.id === id)
             if (index !== -1) {
                 this.items[index] = response.data
             }
         },
         async deleteItem(id) {
-            await api.delete(`/studios/${id}/`)
+            await api.delete(`/publisher/${id}/`)
             this.items = this.items.filter(item => item.id !== id)
         },
-
     }
 })

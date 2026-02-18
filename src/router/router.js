@@ -31,6 +31,11 @@ const router = createRouter(
                                 redirect: '/admin/countries'
                             },
                             {
+                                path: 'publishers',
+                                name: 'publishers',
+                                component: () => import('@/entities/publisher/PublishersList.vue')
+                            },
+                            {
                                 path: 'categories',
                                 name: 'categories',
                                 component: () => import('@/entities/category/CategoriesList.vue')

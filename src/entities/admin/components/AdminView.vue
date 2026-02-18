@@ -2,6 +2,7 @@
 import { RouterView } from 'vue-router'
 
 const items = [
+  { title: 'Издатели', name: 'publishers'},
   { title: 'Категории', name: 'categories' },
   { title: 'Страны', name: 'countries' },
   { title: 'Студии', name: 'studios'},

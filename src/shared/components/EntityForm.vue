@@ -113,6 +113,7 @@ const getFieldComponent = (field) => {
     case 'select': return VSelect
     case 'checkbox': return VCheckbox
     case 'textarea': return VTextarea
+    case 'date': return VTextField
     default: return VTextField
   }
 }
@@ -130,6 +131,13 @@ const getFieldProps = (field) => {
       items: field.items || [],
       'item-title': field.itemTitle || 'name',
       'item-value': field.itemValue || 'id'
+    }
+  }
+
+  if (field.component === 'date' || field.type === 'date') {
+    return {
+      ...baseProps,
+      type: 'date',
     }
   }
   return baseProps
