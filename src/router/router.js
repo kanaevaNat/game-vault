@@ -41,6 +41,11 @@ const router = createRouter(
                                 component: () => import('@/entities/category/CategoriesList.vue')
                             },
                             {
+                                path: 'news',
+                                name: 'news',
+                                component: () => import('@/entities/news/NewsList.vue')
+                            },
+                            {
                                 path: 'countries',
                                 name: 'countries',
                                 component: () => import('@/entities/country/CountriesList.vue')

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, computed, onMounted } from 'vue'
+import { ref, watch, computed, nextTick } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
 import { required, minLength, maxLength, email } from '@/plugins/vuelidate.js'
 import { VTextField, VSelect, VCheckbox, VTextarea } from 'vuetify/components'
@@ -19,83 +19,65 @@ const form = ref({})
 const pending = ref(false)
 const validationReady = ref(false)
 
-watch(() => props.modelValue, (newVal) => {
-  dialog.value = newVal
-
-  if (newVal && props.item) {
-    const initialForm = {}
-
-    props.store.formFields.forEach(field => {
-      const detailsKey = `${field.key}_details`
-
-      if (props.item[detailsKey] && typeof props.item[detailsKey] === 'object') {
-        initialForm[field.key] = props.item[detailsKey].id
-      }
-      else {
-        initialForm[field.key] = props.item[field.key]
-      }
-    })
-
-    form.value = initialForm
-
-    setTimeout(() => {
-      if ($v.value) {
-        props.mode === 'edit' ? $v.value.$touch() : $v.value.$reset()
-        validationReady.value = true
-      }
-    }, 0)
-
-  } else if (newVal && props.mode === 'create') {
-    form.value = {}
-    setTimeout(() => {
-      if ($v.value) {
-        $v.value.$reset()
-        validationReady.value = true
-      }
-    }, 0)
-  }
-})
+const currentImageUrl = ref(null)
+const selectedFile = ref(null)
 
 const rules = computed(() => {
-  const r = {}
-
-  props.store.formFields.forEach(field => {
+  return props.store.formFields.reduce((acc, field) => {
     if (field.validation) {
-      r[field.key] = {}
-
-      if (field.validation.required) {
-        r[field.key].required = required
-      }
-      if (field.validation.minLength) {
-        r[field.key].minLength = minLength(field.validation.minLength)
-      }
-      if (field.validation.maxLength) {
-        r[field.key].maxLength = maxLength(field.validation.maxLength)
-      }
-      if (field.validation.email) {
-        r[field.key].email = email
-      }
+      acc[field.key] = {}
+      if (field.validation.required) acc[field.key].required = required
+      if (field.validation.minLength) acc[field.key].minLength = minLength(field.validation.minLength)
+      if (field.validation.maxLength) acc[field.key].maxLength = maxLength(field.validation.maxLength)
+      if (field.validation.email) acc[field.key].email = email
     }
-  })
-
-  return r
+    return acc
+  }, {})
 })
 
 const $v = useVuelidate(rules, form)
 
-const isSubmitDisabled = computed(() => {
-  if (!validationReady.value) return true
-  return $v.value?.$invalid
-})
-
-const validate = ({ prop }) => {
-  if (!validationReady.value) return ''
-  const fieldValidation = $v.value?.[prop]
-  if (fieldValidation?.$errors?.length > 0) {
-    return fieldValidation.$errors[0].$message
+const validationState = computed(() => ({
+  isInvalid: !validationReady.value || $v.value?.$invalid,
+  getError: (prop) => {
+    if (!validationReady.value) return ''
+    return $v.value?.[prop]?.$errors[0]?.$message || ''
   }
-  return ''
-}
+}))
+
+watch(() => props.modelValue, async (newVal) => {
+  dialog.value = newVal
+
+  if (!newVal) return
+
+  currentImageUrl.value = null
+  selectedFile.value = null
+  validationReady.value = false
+
+  if (props.mode === 'edit' && props.item) {
+    form.value = props.store.formFields.reduce((acc, field) => {
+      const detailsKey = `${field.key}_details`
+
+      if (props.item[detailsKey] && typeof props.item[detailsKey] === 'object') {
+        acc[field.key] = props.item[detailsKey].id
+      } else if (field.type === 'file' || field.component === 'file') {
+        acc[field.key] = null
+        if (props.item[field.key]) currentImageUrl.value = props.item[field.key]
+      } else {
+        acc[field.key] = props.item[field.key]
+      }
+      return acc
+    }, {})
+  } else {
+    form.value = {}
+  }
+
+  await nextTick()
+  if ($v.value) {
+    props.mode === 'edit' ? $v.value.$touch() : $v.value.$reset()
+    validationReady.value = true
+  }
+})
 
 const handleBlur = (key) => {
   if (validationReady.value && $v.value?.[key]) {
@@ -109,38 +91,55 @@ const resetValidation = () => {
 }
 
 const getFieldComponent = (field) => {
-  switch (field.component || field.type) {
-    case 'select': return VSelect
-    case 'checkbox': return VCheckbox
-    case 'textarea': return VTextarea
-    case 'date': return VTextField
-    default: return VTextField
+  const typeMap = {
+    select: VSelect,
+    checkbox: VCheckbox,
+    textarea: VTextarea,
+    date: VTextField
   }
+  return typeMap[field.component || field.type] || VTextField
 }
 
 const getFieldProps = (field) => {
+  const { label, validation, component, type, items, itemTitle, itemValue, rows } = field
   const baseProps = {
-    label: field.label,
+    label,
     variant: 'outlined',
-    required: field.required !== false
+    required: validation?.required || false
   }
 
-  if (field.component === 'select') {
-    return {
-      ...baseProps,
-      items: field.items || [],
-      'item-title': field.itemTitle || 'name',
-      'item-value': field.itemValue || 'id'
-    }
+  const typeProps = {
+    select: { items, 'item-title': itemTitle || 'name', 'item-value': itemValue || 'id' },
+    date: { type: 'date', prependIcon: 'mdi-calendar' },
+    textarea: { rows: rows || 4, counter: true }
   }
 
-  if (field.component === 'date' || field.type === 'date') {
-    return {
-      ...baseProps,
-      type: 'date',
-    }
+  const fieldType = component || type
+  return { ...baseProps, ...(typeProps[fieldType] || {}) }
+}
+
+const handleFileChange = (key, event) => {
+  const file = event.target.files?.[0]
+  if (file) {
+    selectedFile.value = file
+    form.value[key] = file
   }
-  return baseProps
+}
+
+const imagePreviewSrc = computed(() => {
+  if (selectedFile.value) {
+    return URL.createObjectURL(selectedFile.value)
+  }
+  return currentImageUrl.value || ''
+})
+
+const clearImage = () => {
+  form.value.image = null
+  selectedFile.value = null
+  currentImageUrl.value = null
+
+  const fileInput = document.querySelector('input[type="file"]')
+  if (fileInput) fileInput.value = ''
 }
 
 const cancel = () => {
@@ -149,36 +148,33 @@ const cancel = () => {
 
 const submit = async () => {
   if (!validationReady.value) return
-
   await $v.value.$validate()
+  if ($v.value.$invalid) return
 
-  if (!$v.value.$invalid) {
-    pending.value = true
-
-    try {
-      if (props.mode === 'create') {
-        await props.store.createItem(form.value)
-      } else {
-        await props.store.updateItem(props.item.id, form.value)
-      }
-
-      emit('saved')
-      emit('update:modelValue', false)
-    } catch (error) {
-      console.error('Save error:', error)
-    } finally {
-      pending.value = false
+  pending.value = true
+  try {
+    const payload = {
+      ...form.value,
+      image: selectedFile.value || currentImageUrl.value || null
     }
+
+    const action = props.mode === 'create'
+        ? props.store.createItem(payload)
+        : props.store.updateItem(props.item.id, payload)
+
+    await action
+    emit('saved')
+    emit('update:modelValue', false)
+  } catch (error) {
+    console.error('Save error:', error.response?.data || error)
+  } finally {
+    pending.value = false
   }
 }
 </script>
 
 <template>
-  <v-dialog
-      v-model="dialog"
-      max-width="500px"
-      @after-leave="resetValidation"
-  >
+  <v-dialog v-model="dialog" max-width="500px" @after-leave="resetValidation">
     <v-card class="entity-form">
       <v-card-title>
         {{ mode === 'create' ? 'Создать' : 'Редактировать' }} {{ entityType }}
@@ -186,17 +182,43 @@ const submit = async () => {
 
       <v-card-text>
         <v-form>
-          <component
-              v-for="field in store.formFields"
-              :is="getFieldComponent(field)"
-              :key="field.key"
-              v-model="form[field.key]"
-              @blur="handleBlur(field.key)"
-              v-bind="getFieldProps(field)"
-              :error-messages="validate({ prop: field.key })"
-              :error="!!validate({ prop: field.key })"
-          ></component>
+          <template v-for="field in store.formFields" :key="field.key">
+
+            <div v-if="field.type === 'file' || field.component === 'file'" class="mb-4">
+              <v-label class="text-body-2 mb-2 d-block">{{ field.label }}</v-label>
+              <input
+                  type="file"
+                  :accept="field.accept || 'image/*'"
+                  @change="(e) => handleFileChange(field.key, e)"
+                  class="file-input"
+              />
+              <div v-if="validationState.getError(field.key)" class="text-error text-caption mt-1">
+                {{ validationState.getError(field.key) }}
+              </div>
+            </div>
+
+            <component
+                v-else
+                :is="getFieldComponent(field)"
+                v-model="form[field.key]"
+                @blur="handleBlur(field.key)"
+                v-bind="getFieldProps(field)"
+                :error-messages="validationState.getError(field.key)"
+                :error="!!validationState.getError(field.key)"
+            />
+          </template>
         </v-form>
+
+        <div v-if="imagePreviewSrc" class="mt-4 text-center">
+          <img
+              :src="imagePreviewSrc"
+              alt="Preview"
+              class="preview-image"
+          />
+          <v-btn size="small" variant="text" color="error" @click="clearImage" class="mt-2">
+            Удалить
+          </v-btn>
+        </div>
       </v-card-text>
 
       <v-card-actions>
@@ -204,7 +226,7 @@ const submit = async () => {
         <v-btn
             color="primary"
             @click="submit"
-            :disabled="isSubmitDisabled"
+            :disabled="validationState.isInvalid"
             :loading="pending"
         >
           Сохранить
@@ -213,3 +235,23 @@ const submit = async () => {
     </v-card>
   </v-dialog>
 </template>
+
+<style scoped lang="scss">
+.file-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid rgba(0,0,0,0.38);
+  border-radius: 4px;
+
+  &::-webkit-file-upload-button {
+    cursor: pointer;
+  }
+}
+
+.preview-image {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+</style>
