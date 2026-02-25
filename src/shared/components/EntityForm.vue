@@ -1,8 +1,8 @@
 <script setup>
 import { ref, watch, computed, nextTick } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
-import { required, minLength, maxLength, email } from '@/plugins/vuelidate.js'
-import { VTextField, VSelect, VCheckbox, VTextarea } from 'vuetify/components'
+import { required, minLength, maxLength, integer } from '@/plugins/vuelidate.js'
+import { VTextField, VSelect, VTextarea } from 'vuetify/components'
 
 const props = defineProps({
   modelValue: { type: Boolean, required: true },
@@ -29,7 +29,7 @@ const rules = computed(() => {
       if (field.validation.required) acc[field.key].required = required
       if (field.validation.minLength) acc[field.key].minLength = minLength(field.validation.minLength)
       if (field.validation.maxLength) acc[field.key].maxLength = maxLength(field.validation.maxLength)
-      if (field.validation.email) acc[field.key].email = email
+      if (field.validation.integer) acc[field.key].integer = integer
     }
     return acc
   }, {})
@@ -47,29 +47,44 @@ const validationState = computed(() => ({
 
 watch(() => props.modelValue, async (newVal) => {
   dialog.value = newVal
-
   if (!newVal) return
-
   currentImageUrl.value = null
   selectedFile.value = null
   validationReady.value = false
 
   if (props.mode === 'edit' && props.item) {
     form.value = props.store.formFields.reduce((acc, field) => {
-      const detailsKey = `${field.key}_details`
+      const fieldKey = field.key
+      const itemValue = props.item[fieldKey]
+
+      const detailsKey = `${fieldKey}_details`
 
       if (props.item[detailsKey] && typeof props.item[detailsKey] === 'object') {
-        acc[field.key] = props.item[detailsKey].id
-      } else if (field.type === 'file' || field.component === 'file') {
-        acc[field.key] = null
-        if (props.item[field.key]) currentImageUrl.value = props.item[field.key]
-      } else {
-        acc[field.key] = props.item[field.key]
+        if (Array.isArray(props.item[detailsKey])) {
+          acc[fieldKey] = props.item[detailsKey].map(item => item.id)
+        }
+        else {
+          acc[fieldKey] = props.item[detailsKey].id
+        }
+      }
+      else if (field.type === 'file' || field.component === 'file') {
+        acc[fieldKey] = null
+        if (props.item[fieldKey]) currentImageUrl.value = props.item[fieldKey]
+      }
+      else {
+        acc[fieldKey] = itemValue
       }
       return acc
     }, {})
   } else {
-    form.value = {}
+    form.value = props.store.formFields.reduce((acc, field) => {
+      if (field.component === 'multiselect') {
+        acc[field.key] = []
+      } else {
+        acc[field.key] = null
+      }
+      return acc
+    }, {})
   }
 
   await nextTick()
@@ -93,7 +108,7 @@ const resetValidation = () => {
 const getFieldComponent = (field) => {
   const typeMap = {
     select: VSelect,
-    checkbox: VCheckbox,
+    multiselect: VSelect,
     textarea: VTextarea,
     date: VTextField
   }
@@ -109,7 +124,23 @@ const getFieldProps = (field) => {
   }
 
   const typeProps = {
-    select: { items, 'item-title': itemTitle || 'name', 'item-value': itemValue || 'id' },
+    select: {
+      items,
+      'item-title': itemTitle || 'name',
+      'item-value': itemValue || 'id',
+      clearable: true
+    },
+    multiselect: {
+      items,
+      'item-title': itemTitle || 'name',
+      'item-value': itemValue || 'id',
+      multiple: true,
+      chips: true,
+      closableChips: true,
+      clearable: true,
+      placeholder: 'Выберите...',
+      returnObject: false,
+    },
     date: { type: 'date', prependIcon: 'mdi-calendar' },
     textarea: { rows: rows || 4, counter: true }
   }
@@ -153,9 +184,24 @@ const submit = async () => {
 
   pending.value = true
   try {
-    const payload = {
-      ...form.value,
-      image: selectedFile.value || currentImageUrl.value || null
+    const payload = { ...form.value }
+
+    props.store.formFields.forEach(field => {
+      if (field.component === 'multiselect' || field.type === 'multiselect') {
+        const val = payload[field.key]
+        if (!val) {
+          payload[field.key] = []
+        } else if (!Array.isArray(val)) {
+          payload[field.key] = [val]
+        }
+        payload[field.key] = payload[field.key].map(id => Number(id))
+      }
+    })
+
+    if (selectedFile.value) {
+      payload.image = selectedFile.value
+    } else if (!currentImageUrl.value) {
+      payload.image = null
     }
 
     const action = props.mode === 'create'
@@ -183,7 +229,6 @@ const submit = async () => {
       <v-card-text>
         <v-form>
           <template v-for="field in store.formFields" :key="field.key">
-
             <div v-if="field.type === 'file' || field.component === 'file'" class="mb-4">
               <v-label class="text-body-2 mb-2 d-block">{{ field.label }}</v-label>
               <input
