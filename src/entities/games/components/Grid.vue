@@ -9,7 +9,7 @@ const loading = computed(() => gameStore.loading);
 
 onMounted(() => {
   if (games.value.length === 0) {
-    gameStore.fetchGames()
+    gameStore.fetchItems()
   }
 })
 </script>
@@ -42,7 +42,7 @@ onMounted(() => {
   &__search{
     display: flex;
     justify-content: center;
-    margin-top: 100px;
+    @include header-margin;
 
     &-input {
       width: 100%;

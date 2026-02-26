@@ -13,12 +13,16 @@ a {
 html{
   font-size: 16px;
 }
-
+.v-main {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+  box-sizing: border-box !important;
+}
 body {
   font-family: var(--font-family-base);
   font-size: 1rem;
   font-weight: 700;
-  min-height: 100vh;
+  height: auto;
   position: relative;
   background-color: var(--color-dark);
   color: var(--color-light);

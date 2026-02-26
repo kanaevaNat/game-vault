@@ -222,12 +222,12 @@ const submit = async () => {
 <template>
   <v-dialog v-model="dialog" max-width="500px" @after-leave="resetValidation">
     <v-card class="entity-form">
-      <v-card-title>
+      <v-card-title class="entity-form__title">
         {{ mode === 'create' ? 'Создать' : 'Редактировать' }} {{ entityType }}
       </v-card-title>
 
       <v-card-text>
-        <v-form>
+        <v-form class="form">
           <template v-for="field in store.formFields" :key="field.key">
             <div v-if="field.type === 'file' || field.component === 'file'" class="mb-4">
               <v-label class="text-body-2 mb-2 d-block">{{ field.label }}</v-label>
@@ -250,6 +250,7 @@ const submit = async () => {
                 v-bind="getFieldProps(field)"
                 :error-messages="validationState.getError(field.key)"
                 :error="!!validationState.getError(field.key)"
+                class="form__fields"
             />
           </template>
         </v-form>
@@ -290,6 +291,19 @@ const submit = async () => {
 
   &::-webkit-file-upload-button {
     cursor: pointer;
+  }
+}
+
+.entity-form{
+  &__title{
+    margin: 20px 0 20px 25px;
+    font-size: 1.3rem;
+  }
+}
+
+.form{
+  &__fields{
+    margin-bottom: 20px;
   }
 }
 

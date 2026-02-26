@@ -31,8 +31,8 @@ const router = createRouter(
                                 redirect: '/admin/countries'
                             },
                             {
-                                path: 'games',
-                                name: 'games',
+                                path: 'games-admin',
+                                name: 'games-admin',
                                 component: () => import('@/entities/games/components/GamesList.vue')
                             },
                             {

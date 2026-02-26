@@ -30,3 +30,19 @@
     transform: scale(0.98);
   }
 }
+
+@mixin header-margin {
+  margin-top: var(--header-height);
+
+  @media (max-width: 800px) {
+    margin-top: var(--header-mobile-height);
+  }
+}
+
+@mixin header-padding($extra: 0) {
+  padding-top: calc(var(--header-height) + #{$extra});
+
+  @media (max-width: 800px) {
+    padding-top: calc(var(--header-mobile-height) + #{$extra});
+  }
+}
