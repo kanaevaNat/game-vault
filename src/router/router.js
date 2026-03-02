@@ -22,6 +22,11 @@ const router = createRouter(
                         component: () => import('@/entities/games/components/Grid.vue')
                     },
                     {
+                        path: 'news',
+                        name: 'news',
+                        component: () => import('@/entities/news/components/FeedGrid.vue')
+                    },
+                    {
                         path: '/admin',
                         name: 'admin',
                         component: () => import('@/entities/admin/components/AdminView.vue'),
@@ -46,9 +51,9 @@ const router = createRouter(
                                 component: () => import('@/entities/category/CategoriesList.vue')
                             },
                             {
-                                path: 'news',
-                                name: 'news',
-                                component: () => import('@/entities/news/NewsList.vue')
+                                path: 'news-admin',
+                                name: 'news-admin',
+                                component: () => import('@/entities/news/components/NewsList.vue')
                             },
                             {
                                 path: 'countries',

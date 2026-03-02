@@ -1,6 +1,6 @@
 <script setup>
 import EntityList from '@/shared/components/EntityList.vue'
-import { useNewsStore } from './store'
+import { useNewsStore } from '../store.js'
 
 const newsStore = useNewsStore()
 </script>

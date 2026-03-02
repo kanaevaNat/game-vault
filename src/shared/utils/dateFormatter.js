@@ -55,8 +55,11 @@ export function formatRelativeDate(isoDate) {
     const minutes = Math.floor(seconds / 60)
     const hours = Math.floor(minutes / 60)
     const days = Math.floor(hours / 24)
+    const months = Math.floor(days / 30)
+    const years = Math.floor(days / 365)
 
-    if (days > 7) return formatShortDate(isoDate)
+    if (years >= 1) return `${years} г. назад`
+    if (months >= 1) return `${months} мес. назад`
     if (days >= 1) return `${days} дн. назад`
     if (hours >= 1) return `${hours} ч. назад`
     if (minutes >= 1) return `${minutes} мин. назад`

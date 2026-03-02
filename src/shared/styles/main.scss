@@ -1,5 +1,6 @@
 @import './reset.scss';
 @import './variables.scss';
+@import './markdown.scss';
 
 * {
   text-decoration: none;
@@ -73,5 +74,5 @@ body::after {
 
 .glass{
   backdrop-filter: blur(12px);
-  background-color: rgba(var(--background), 0.7);
+  background-color: rgba(var(--background), 0.5);
 }

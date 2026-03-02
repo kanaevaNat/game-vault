@@ -11,7 +11,7 @@ const items = [
   { title: 'Игры', name: 'games-admin'},
   { title: 'Издатели', name: 'publishers'},
   { title: 'Категории', name: 'categories' },
-  { title: 'Новости', name: 'news' },
+  { title: 'Новости', name: 'news-admin' },
   { title: 'Страны', name: 'countries' },
   { title: 'Студии', name: 'studios'},
 ]

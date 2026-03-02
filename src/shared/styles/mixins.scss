@@ -11,19 +11,20 @@
 
 @mixin neon-outline-button($color) {
   background: transparent;
-  border: 2px solid $color;
-  border-radius: 10px;
+  border: 2px solid rgba($color, 0.7);
+  text-shadow: 0 0 10px $color;
+  border-radius: 7px;
   color: $color;
 
   outline: none;
 
   transition: all 0.3s ease;
 
-  box-shadow: 0 0 8px $color, 0 0 16px $color;
+
 
   &:hover {
     background: rgba($color, 0.05);
-    box-shadow: 0 0 12px $color, 0 0 24px $color, 0 0 32px $color;
+    box-shadow: inset 0 0 8px $color, 0 0 16px $color;
   }
 
   &:active {

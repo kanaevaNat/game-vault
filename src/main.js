@@ -7,6 +7,7 @@ import vuetify from './plugins/vuetify'
 import 'vuetify/styles'
 import { useAdminStore } from '@/entities/admin/store'
 import {i18n} from '@/plugins/vuelidate.js'
+import VueMarkdown from 'vue-markdown-render'
 
 import App from './App.vue'
 
@@ -17,6 +18,7 @@ app.use(pinia)
 app.use(router)
 app.use(vuetify)
 app.use(i18n)
+app.component('VueMarkdown', VueMarkdown)
 
 const adminStore = useAdminStore()
 await adminStore.initialize()

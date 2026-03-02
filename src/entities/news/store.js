@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia'
 import api from '@/shared/api/axios.js'
-import {formatShortDate} from '@/shared/utils/dateFormatter.js'
+import {formatRelativeDate, formatShortDate} from '@/shared/utils/dateFormatter.js'
 import {buildFormData} from '@/shared/utils/formDataBuilder.js'
 
 export const useNewsStore = defineStore('news', {
@@ -8,7 +8,7 @@ export const useNewsStore = defineStore('news', {
         items: [],
         loading: false,
         error: null,
-
+        searchQuery: '',
         headers: [
             {key: 'id', title: 'ID', width: '80px'},
             {key: 'title', title: 'Заголовок'},
@@ -49,7 +49,22 @@ export const useNewsStore = defineStore('news', {
 
         tableState: null,
     }),
+    getters: {
+        filteredNews: (state) => {
+            if (!state.searchQuery.trim()) {
+                return state.items
+            }
+            const query = state.searchQuery.toLowerCase()
+            return state.items.filter(news => news.title.toLowerCase().includes(query))
+        },
 
+        filteredNewsWithRelativeDate() {
+            return this.filteredNews.map(item => ({
+                ...item,
+                relativeDate: formatRelativeDate(item.created_at)
+            }))
+        }
+    },
     actions: {
         async fetchItems() {
             this.loading = true

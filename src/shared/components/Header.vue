@@ -39,7 +39,7 @@ const isMenuOpen = ref(false)
           <router-link :to="{ name: 'games'}" class="header__menu-link">Игры</router-link>
         </li>
         <li class="header__menu-item">
-          <router-link :to="{ name: 'games'}" class="header__menu-link">Новости</router-link>
+          <router-link :to="{ name: 'news'}" class="header__menu-link">Новости</router-link>
         </li>
         <li class="header__menu-item">
           <router-link
