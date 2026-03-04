@@ -40,7 +40,7 @@ const goToFullNews = () => {
     <div class="card__img">
       <img :src="n.image">
     </div>
-    <VueMarkdown :source="previewContent" class="card__content"/>
+    <VueMarkdown :source="previewContent" class="text-markdown"/>
     <div class="card__button">
       <button
           @click="goToFullNews"
@@ -104,8 +104,12 @@ const goToFullNews = () => {
   }
 }
 
+.text-markdown{
+  padding: 0 2rem 2rem;
+}
+
 .button {
-  @include neon-outline-button($color-green);
+  @include neon-outline-button($color-blue);
 
 }
 </style>

@@ -88,6 +88,7 @@ const isMenuOpen = ref(false)
   display: grid;
   align-items: center;
   transition: all 0.3s ease;
+  font-size: 1.1rem;
 
   &__menu {
     &-list {

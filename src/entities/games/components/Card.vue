@@ -1,5 +1,5 @@
 <script setup>
-const props = defineProps({
+defineProps({
   game: {
     type: Object,
     required: true
@@ -8,34 +8,34 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="card glass">
+  <RouterLink :to="`/games/${game.id}`"  class="card glass">
     <div class="card__top">
-      <a href="/" class="card__img">
+      <div class="card__img">
         <img :src="game.preview" alt="{{game.name}}">
-      </a>
+      </div>
     </div>
     <div class="card__bottom">
       <div class="card__info">
         <div class="card__info-title">{{game.name}}</div>
       </div>
     </div>
-  </div>
+  </RouterLink>
 </template>
 
 <style lang="scss" scoped>
 .card{
-  margin-top: 4rem;
-  width: clamp(200px, 80vw, 250px);
-
+  max-width: 300px;
   min-height: 0;
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
   position: relative;
   overflow: hidden;
+  text-decoration: none;
+  color: inherit;
 
   &__top{
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 1 / 1.5;
     width: 100%;
     position: relative;
 

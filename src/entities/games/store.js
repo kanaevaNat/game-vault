@@ -8,7 +8,7 @@ import {buildFormData} from "@/shared/utils/formDataBuilder.js";
 export const useGameStore = defineStore('game', {
     state: () => ({
         items: [],
-        currentGame:null,
+        currentGame: null,
         loading: false,
         error: null,
         searchQuery: '',
@@ -136,29 +136,27 @@ export const useGameStore = defineStore('game', {
                     await studiosStore.fetchItems()
                 }
                 const studioFields = this.formFields.find(f => f.key === 'studio')
-                if (studioFields){
+                if (studioFields) {
                     studioFields.items = studiosStore.items
                 }
                 if (publishersStore.items.length === 0) {
                     await publishersStore.fetchItems()
                 }
                 const publisherFields = this.formFields.find(f => f.key === 'publisher')
-                if (publisherFields){
+                if (publisherFields) {
                     publisherFields.items = publishersStore.items
                 }
                 if (categoriesStore.items.length === 0) {
                     await categoriesStore.fetchItems()
                 }
                 const categoriesFields = this.formFields.find(f => f.key === 'categories')
-                if (categoriesFields){
+                if (categoriesFields) {
                     categoriesFields.items = categoriesStore.items
                 }
 
-            }
-            catch (error) {
+            } catch (error) {
                 console.error('Ошибка загрузки игр:', error)
-            }
-            finally {
+            } finally {
                 this.loading = false
             }
         },
@@ -180,6 +178,23 @@ export const useGameStore = defineStore('game', {
         async deleteItem(id) {
             await api.delete(`/games/${id}/`)
             this.items = this.items.filter(item => item.id !== id)
+        },
+
+        async fetchItemById(id) {
+            this.loading = true;
+            try {
+                const response = await api.get(`/games/${id}/`);
+                this.currentGame = response.data;
+                return response.data;
+            } catch (error) {
+                console.error(error);
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        findItemById(id) {
+            return this.items.find(item => item.id == id)
         },
 
         setSearchQuery(query) {
