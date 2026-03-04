@@ -47,9 +47,12 @@ const validationState = computed(() => ({
 
 watch(() => props.modelValue, async (newVal) => {
   dialog.value = newVal
-  if (!newVal) return
-  currentImageUrl.value = null
-  selectedFile.value = null
+  if (!newVal) {
+    currentImageUrl.value = null
+    selectedFile.value = null
+    resetValidation()
+    return
+  }
   validationReady.value = false
 
   if (props.mode === 'edit' && props.item) {
@@ -103,6 +106,7 @@ const handleBlur = (key) => {
 const resetValidation = () => {
   validationReady.value = false
   $v.value?.$reset()
+  form.value = {}
 }
 
 const getFieldComponent = (field) => {
@@ -220,7 +224,12 @@ const submit = async () => {
 </script>
 
 <template>
-  <v-dialog v-model="dialog" max-width="500px" @after-leave="resetValidation">
+  <v-dialog
+      v-model="dialog"
+      max-width="500px"
+      @after-leave="resetValidation"
+      @update:modelValue="emit('update:modelValue', $event)"
+  >
     <v-card class="entity-form">
       <v-card-title class="entity-form__title">
         {{ mode === 'create' ? 'Создать' : 'Редактировать' }} {{ entityType }}

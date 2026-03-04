@@ -8,10 +8,10 @@ export function buildFormData(data) {
             if (value.length === 0) {
                 formData.append(key, '[]')
             } else {
-                value.forEach((item, index) => {
+                value.forEach((item) => {
                     const val = item?.id ?? item
                     const numVal = Number(val)
-                    formData.append(`${key}[${index}]`, Number.isNaN(numVal) ? val : numVal)
+                    formData.append(`${key}`, Number.isNaN(numVal) ? val : numVal)
                 })
             }
         }
