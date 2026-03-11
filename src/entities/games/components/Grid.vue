@@ -23,7 +23,7 @@ defineProps({
 
 <style lang="scss" scoped>
 .page {
-  max-width: 1400px;
+  max-width: 1300px;
   margin: 0 auto;
   &__grid{
     display: grid;

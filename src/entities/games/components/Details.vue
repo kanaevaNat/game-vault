@@ -52,32 +52,27 @@ const storeConfig = {
 </script>
 
 <template>
-
   <div v-if="!game" class="loading">Загрузка...</div>
   <div v-else class="game-page">
     <div class="game-page__top">
-
 
       <div class="game-page__img-wrapper">
         <img :src="game.preview" :alt="game.name" class="game-img"/>
       </div>
 
-
       <h1 class="game-title">{{ game.name }}</h1>
-
 
       <div class="game-page__categories">
         <div class="game-page__categories-list">
           <span
               v-for="category in game.categories_details"
               :key="category.id"
-              class="game-page__categories-tag glass"
+              class="game-page__categories tag glass"
           >
             {{ category.name }}
           </span>
         </div>
       </div>
-
 
       <div class="game-page__info">
         <div class="info-item">
@@ -110,7 +105,7 @@ const storeConfig = {
       </div>
 
       <div class="game-page__stores glass">
-        <div class="price-block">Цена</div>
+
         <div class="links-block" v-if="storeLinks.length">
           <a
               v-for="link in storeLinks"
@@ -129,7 +124,6 @@ const storeConfig = {
           </a>
         </div>
       </div>
-
     </div>
     <div class="game-page__description">
       <h2 class="description-title">Описание</h2>
@@ -197,7 +191,8 @@ const storeConfig = {
     border: 2px solid transparent;
     border-radius: 0.75rem;
     padding: 1rem;
-    height: 100%;
+    height: 70%;
+    align-self: end;
 
     .price-block {
       width: 100%;
@@ -212,6 +207,7 @@ const storeConfig = {
       display: flex;
       flex-direction: column;
       gap: 1rem;
+      margin-top: auto;
 
       &__button {
         @include neon-outline-button($color-blue);
@@ -285,17 +281,8 @@ const storeConfig = {
       gap: 0.75rem;
     }
 
-    &-tag {
-      border: 1px solid var(--color-input-text);
-      color: #fff;
-      display: block;
-      padding: 0.3rem 1rem;
-      font-size: 0.8rem;
-      border-radius: 0.75rem;
-      text-align: center;
-      align-items: center;
+    .tag {
       font-weight: 500;
-      transition: all 0.3s ease;
 
       &:hover {
         @include neon-outline-button($color-yellow);

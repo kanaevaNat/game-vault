@@ -12,6 +12,15 @@ export const useGameStore = defineStore('game', {
         loading: false,
         error: null,
         searchQuery: '',
+        filters: {
+            studios: [],
+            publishers: [],
+            categories: [],
+            year: {
+                min: null,
+                max: null
+            }
+        },
         headers: [
             {key: 'id', title: 'ID'},
             {key: 'name', title: 'Название'},
@@ -116,11 +125,25 @@ export const useGameStore = defineStore('game', {
     }),
     getters: {
         filteredGames: (state) => {
-            if (!state.searchQuery.trim()) {
-                return state.items
-            }
-            const query = state.searchQuery.toLowerCase()
-            return state.items.filter(game => game.name.toLowerCase().includes(query))
+            return state.items.filter(game => {
+                const matchesSearch = !state.searchQuery ||
+                    game.name.toLowerCase().includes(state.searchQuery.toLowerCase());
+                const matchesStudios = !state.filters.studios.length ||
+                    state.filters.studios.includes(game.studio_details?.id);
+                const matchesPublishers = !state.filters.publishers.length ||
+                    state.filters.publishers.includes(game.publisher_details?.id);
+                const matchesCategories = !state.filters.categories.length ||
+                    game.categories_details?.some(c =>
+                        state.filters.categories.includes(c.id)
+                    );
+                const year = game.release_year || game.year;
+                const matchesYear =
+                    (!state.filters.year.min || year >= state.filters.year.min) &&
+                    (!state.filters.year.max || year <= state.filters.year.max);
+
+                return matchesSearch && matchesStudios && matchesPublishers &&
+                    matchesCategories && matchesYear;
+            });
         }
     },
     actions: {
@@ -197,8 +220,18 @@ export const useGameStore = defineStore('game', {
             return this.items.find(item => item.id == id)
         },
 
-        setSearchQuery(query) {
-            this.searchQuery = query
+        setStudioFilter(allStudios) {
+            this.filters.studios = allStudios
+        },
+
+        resetFilters() {
+            this.filters = {
+                studios: [],
+                publishers: [],
+                categories: [],
+                year: { min: null, max: null }
+            };
+            this.searchQuery = '';
         }
     }
 })

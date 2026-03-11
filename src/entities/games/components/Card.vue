@@ -11,7 +11,7 @@ defineProps({
   <RouterLink :to="`/games/${game.id}`"  class="card glass">
     <div class="card__top">
       <div class="card__img">
-        <img :src="game.preview" alt="{{game.name}}">
+        <img :src="game.preview" :alt="game.name">
       </div>
     </div>
     <div class="card__bottom">
