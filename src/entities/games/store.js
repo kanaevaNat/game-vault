@@ -120,12 +120,12 @@ export const useGameStore = defineStore('game', {
                     required: false
                 }
             },
-        ]
-
+        ],
+        pagination: { page: 1, perPage: 1 },
     }),
     getters: {
         filteredGames: (state) => {
-            return state.items.filter(game => {
+            let result = state.items.filter(game => {
                 const matchesSearch = !state.searchQuery ||
                     game.name.toLowerCase().includes(state.searchQuery.toLowerCase());
                 const matchesStudios = !state.filters.studios.length ||
@@ -133,17 +133,24 @@ export const useGameStore = defineStore('game', {
                 const matchesPublishers = !state.filters.publishers.length ||
                     state.filters.publishers.includes(game.publisher_details?.id);
                 const matchesCategories = !state.filters.categories.length ||
-                    game.categories_details?.some(c =>
-                        state.filters.categories.includes(c.id)
-                    );
+                    game.categories_details?.some(c => state.filters.categories.includes(c.id));
                 const year = game.release_year || game.year;
                 const matchesYear =
                     (!state.filters.year.min || year >= state.filters.year.min) &&
                     (!state.filters.year.max || year <= state.filters.year.max);
-
                 return matchesSearch && matchesStudios && matchesPublishers &&
                     matchesCategories && matchesYear;
             });
+
+            const total = result.length;
+            const start = (state.pagination.page - 1) * state.pagination.perPage;
+            const end = start + state.pagination.perPage;
+
+            return {
+                items: result.slice(start, end),
+                total,
+                totalPages: Math.ceil(total / state.pagination.perPage)
+            };
         }
     },
     actions: {
@@ -224,6 +231,16 @@ export const useGameStore = defineStore('game', {
             this.filters.studios = allStudios
         },
 
+        setPage(page) {
+            const totalPages = this.filteredGames.totalPages;
+            this.pagination.page = Math.max(1, Math.min(page, totalPages));
+        },
+
+        setPerPage(perPage) {
+            this.pagination.perPage = perPage;
+            this.pagination.page = 1;
+        },
+
         resetFilters() {
             this.filters = {
                 studios: [],
@@ -232,6 +249,7 @@ export const useGameStore = defineStore('game', {
                 year: { min: null, max: null }
             };
             this.searchQuery = '';
+            this.pagination.page = 1;
         }
     }
 })

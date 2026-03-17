@@ -1,4 +1,5 @@
 <script setup>
+import {useGameStore} from "@/entities/games/store.js";
 import { useStudiosStore } from '@/entities/studio/store';
 import { usePublishersStore } from '@/entities/publisher/store';
 import { useCategoriesStore } from '@/entities/category/store';
@@ -19,6 +20,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update:modelValue']);
+const gameStore = useGameStore();
 const studiosStore = useStudiosStore();
 const publishersStore = usePublishersStore();
 const categoriesStore = useCategoriesStore();
@@ -33,6 +35,7 @@ onMounted(async () => {
 
 const updateFilter = (key, value) => {
   emit('update:modelValue', { ...props.modelValue, [key]: value });
+  gameStore.setPage(1);
 };
 </script>
 
