@@ -15,12 +15,8 @@
   text-shadow: 0 0 10px $color;
   border-radius: 7px;
   color: $color;
-
   outline: none;
-
   transition: all 0.3s ease;
-
-
 
   &:hover {
     background: rgba($color, 0.05);
@@ -28,6 +24,22 @@
   }
 
   &:active {
+    transform: scale(0.98);
+  }
+}
+
+@mixin neon-outline-text($color) {
+  text-shadow: 0 0 10px $color;
+  color: transparent;
+  outline: none;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  line-height: 1;
+  white-space: nowrap;
+  font-weight: 900;
+  -webkit-text-stroke: 0.1px $color;
+
+  &:hover {
     transform: scale(0.98);
   }
 }

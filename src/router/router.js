@@ -12,9 +12,7 @@ const router = createRouter(
                     {
                         path: '',
                         name: 'home',
-                        component: {
-                            template: '<div style="padding: 100px">Главная страница — список игр</div>'
-                        }
+                        component: () => import('@/shared/components/HomePage.vue')
                     },
                     {
                         path: 'games',
