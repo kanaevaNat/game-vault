@@ -30,8 +30,14 @@ const router = createRouter(
                         component: () => import('@/entities/news/components/FeedGrid.vue')
                     },
                     {
+                        path:'/news/:id',
+                        name: 'news-details',
+                        component: () => import('@/entities/news/components/Details.vue')
+                    },
+                    {
                         path: '/admin',
                         name: 'admin',
+                        meta: { hideFooter: true },
                         component: () => import('@/entities/admin/components/AdminView.vue'),
                         children: [
                             {

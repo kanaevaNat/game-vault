@@ -1,5 +1,9 @@
 <script setup>
 import Header from "@/shared/components/Header.vue";
+import Footer from "@/shared/components/Footer.vue";
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
 </script>
 
 <template>
@@ -8,6 +12,7 @@ import Header from "@/shared/components/Header.vue";
     <main class="layout-main">
       <router-view />
     </main>
+    <Footer v-if="!route.meta.hideFooter"/>
   </div>
 </template>
 
