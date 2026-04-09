@@ -20,7 +20,7 @@ const submit = async () => {
       class="login-modal"
       @click="close"
   >
-    <div class="login-modal__content" @click.stop>
+    <div class="login-modal__content glass" @click.stop>
       <h2 class="login-modal__title">Авторизация</h2>
       <button
         @click="close"
@@ -32,13 +32,13 @@ const submit = async () => {
         <div class="login-modal__fields">
           <input
               v-model="adminStore.loginForm.username"
-              class="login-modal__field"
+              class="login-modal__field search-input"
               type="text"
               placeholder="Логин"
           />
           <input
               v-model="adminStore.loginForm.password"
-              class="login-modal__field"
+              class="login-modal__field search-input"
               type="password"
               placeholder="Пароль"
           />
@@ -56,7 +56,7 @@ const submit = async () => {
 </Teleport>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .login-modal{
   position: fixed;
   top: 0;
@@ -67,6 +67,8 @@ const submit = async () => {
   display: flex;
   justify-content: center;
   align-items: center;
+  // такое большое число чтобы перекрыть стандартные слои vuetify в админке
+  z-index: 2500;
 
   &__content{
     position: relative;
@@ -77,8 +79,10 @@ const submit = async () => {
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    @include neon-outline-button($color-pink);
-    background-color: var(--color-input);
+    border-radius: 12px;
+  }
+  &__title{
+    color: var(--color-input-text);
   }
   &__fields{
     width: 100%;
@@ -88,18 +92,15 @@ const submit = async () => {
 
   }
   &__field{
-    padding: 0.25rem;
-    border: 1px solid #ddd;
-    border-radius: 6px;
+    padding-block: 0.5rem;
+    padding-left: 1rem;
+    border-radius: 12px;
     font-size: 1rem;
-    color: var(--color-light);
-    background-color: var(--color-input);
-    border-color: var(--color-light);
   }
   &__submit{
       margin-top: 2rem;
-      padding: 0.6rem 2rem;
-      @include neon-outline-button($color-pink);
+      padding: 0.3rem 2rem;
+      @include neon-outline-button($color-pink-lite);
   }
   &__close{
     position: absolute;

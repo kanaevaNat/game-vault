@@ -28,6 +28,7 @@ defineEmits(['update:modelValue']);
 
   .search-input {
     max-width: 560px;
+    border-color: transparent;
   }
 }
 </style>

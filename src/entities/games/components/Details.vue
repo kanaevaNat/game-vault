@@ -104,9 +104,8 @@ const storeConfig = {
         </div>
       </div>
 
-      <div class="game-page__stores glass">
-
-        <div class="links-block" v-if="storeLinks.length">
+      <div class="game-page__stores glass" v-if="storeLinks.length">
+        <div class="links-block">
           <a
               v-for="link in storeLinks"
               :key="link.url"
@@ -191,17 +190,7 @@ const storeConfig = {
     border: 2px solid transparent;
     border-radius: 0.75rem;
     padding: 1rem;
-    height: 70%;
     align-self: end;
-
-    .price-block {
-      width: 100%;
-      text-align: center;
-      font-size: 1.2rem;
-      display: flex;
-      flex-direction: column;
-      margin: auto 0;
-    }
 
     .links-block {
       display: flex;
@@ -283,12 +272,6 @@ const storeConfig = {
 
     .tag {
       font-weight: 500;
-
-      &:hover {
-        @include neon-outline-button($color-yellow);
-        border-radius: 0.75rem;
-
-      }
     }
   }
 }

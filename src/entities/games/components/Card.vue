@@ -33,6 +33,11 @@ defineProps({
   overflow: hidden;
   text-decoration: none;
   color: inherit;
+  transition: transform 0.6s ease;
+
+  &:hover{
+    transform: scale(1.1);
+  }
 
   &__top{
     aspect-ratio: 1 / 1.5;

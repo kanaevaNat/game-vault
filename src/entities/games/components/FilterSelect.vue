@@ -137,20 +137,9 @@ onBeforeUnmount(() => document.removeEventListener('click', handleClickOutside))
         position: relative;
         max-width: 250px;
         height: 3rem;
-        border-color: var(--color-input-text);
 
         &__is-open {
           z-index: 20;
-        }
-
-        &:focus::placeholder {
-          color: var(--color-input-placeholder);
-          font-size: 1rem;
-        }
-
-        &:focus {
-          color: var(--color-input-placeholder);
-          background-color: var(--color-input-text);
         }
       }
 

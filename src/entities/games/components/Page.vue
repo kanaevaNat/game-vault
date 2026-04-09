@@ -109,7 +109,7 @@ onMounted(() => {
     </Transition>
 
     <div v-if="loading" class="loading">Загрузка...</div>
-    <div v-else-if="games.length === 0" class="empty">Нет игр</div>
+    <div v-else-if="games.length === 0" class="loading">Нет игр</div>
     <Grid v-else class="game-grid" :games="games"></Grid>
 
     <div v-if="totalPages > 1" class="pagination">
