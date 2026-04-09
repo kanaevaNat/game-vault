@@ -6,6 +6,7 @@ import {buildFormData} from '@/shared/utils/formDataBuilder.js'
 export const useNewsStore = defineStore('news', {
     state: () => ({
         items: [],
+        currentNews: null,
         loading: false,
         error: null,
         searchQuery: '',
@@ -71,7 +72,10 @@ export const useNewsStore = defineStore('news', {
             this.error = null
             try {
                 const response = await api.get('/news/')
-                this.items = response.data
+                this.items = response.data.map(item => ({
+                    ...item,
+                    relativeDate: formatRelativeDate(item.created_at)
+                }))
             } catch (error) {
                 this.error = error.message
                 console.error('Ошибка загрузки новостей:', error)
@@ -98,6 +102,26 @@ export const useNewsStore = defineStore('news', {
         async deleteItem(id) {
             await api.delete(`/news/${id}/`)
             this.items = this.items.filter(item => item.id !== id)
-        }
+        },
+
+        async fetchItemById(id) {
+            this.loading = true;
+            try {
+                const response = await api.get(`/news/${id}/`);
+                this.currentNews = {
+                    ...response.data,
+                    relativeDate: formatRelativeDate(response.data.created_at)
+                };
+                return this.currentNews;
+            } catch (error) {
+                console.error(error);
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        findItemById(id) {
+            return this.items.find(item => item.id == id)
+        },
     }
 })

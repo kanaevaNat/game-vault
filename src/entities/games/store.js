@@ -151,6 +151,17 @@ export const useGameStore = defineStore('game', {
                 total,
                 totalPages: Math.ceil(total / state.pagination.perPage)
             };
+        },
+        latestGames: (state) => {
+            if (!state.items || state.items.length === 0) return [];
+
+            return [...state.items]
+                .sort((a, b) => {
+                    const yearA = a.release_year || 0;
+                    const yearB = b.release_year || 0;
+                    return yearB - yearA;
+                })
+                .slice(0, 4);
         }
     },
     actions: {

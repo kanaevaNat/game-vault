@@ -7,15 +7,25 @@ const route = useRoute();
 </script>
 
 <template>
-  <div class="layout">
+  <div class="layout-wrapper">
     <Header />
     <main class="layout-main">
       <router-view />
     </main>
-    <Footer v-if="!route.meta.hideFooter"/>
+    <Footer v-if="!route.meta.hideFooter" />
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+.layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+}
 
+.layout-main {
+  flex: 1;
+  width: 100%;
+}
 </style>
