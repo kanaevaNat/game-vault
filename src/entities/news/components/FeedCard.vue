@@ -21,82 +21,37 @@ const previewContent = computed(() => {
       .join('\n\n')
 })
 
-const goToFullNews = () => {
-  router.push(`/news/${props.n.id}`)
-}
 </script>
 
 <template>
-  <div class="card glass">
+  <div class="card-news glass">
 
-    <div class="card__date">
-      <div class="card__date-subtitle">{{ n.relativeDate }}</div>
+    <div class="card-news__date">
+      <div class="card-news__date-subtitle">{{ n.relativeDate }}</div>
     </div>
 
-    <div class="card__info">
-      <div class="card__info-title">{{ n.title }}</div>
+    <div class="card-news__info">
+      <div class="card-news__info-title">{{ n.title }}</div>
     </div>
 
-    <div class="card__img">
+    <div class="card-news__img">
       <img :src="n.image">
     </div>
     <VueMarkdown :source="previewContent" class="text-markdown"/>
-    <div class="card__button">
-      <button
-          @click="goToFullNews"
+    <div class="card-news__button">
+      <RouterLink
+          :to="`/news/${n.id}`"
           class="button"
       >
         Читать далее
-      </button>
+      </RouterLink>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.card {
-
-  width: clamp(300px, 90vw, 1050px);
-
+.card-news {
   min-height: 0;
-  border-radius: 1rem;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  overflow: hidden;
-
-  &__img {
-    display: flex;
-    justify-content: center;
-    padding: 0 2rem 2rem;
-
-    img {
-      position: relative;
-      object-fit: cover;
-    }
-  }
-
-  &__date{
-    &-subtitle{
-      padding: 2rem;
-      text-align: left;
-      font-size: 0.9rem;
-      color: var(--color-grey);
-    }
-  }
-
-  &__info {
-    width: 100%;
-
-    &-title {
-      text-align: left;
-      overflow-wrap: break-word;
-      white-space: normal;
-      min-width: 0;
-      margin: 0;
-      padding: 0 2rem 2rem;
-      font-size: 1.3rem;
-    }
-  }
 
   &__button{
     padding-bottom: 2rem;
@@ -104,12 +59,7 @@ const goToFullNews = () => {
   }
 }
 
-.text-markdown{
-  padding: 0 2rem 2rem;
-}
-
 .button {
   @include neon-outline-button($color-blue);
-
 }
 </style>

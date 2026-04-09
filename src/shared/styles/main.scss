@@ -70,6 +70,7 @@ body::after {
   text-transform: uppercase;
   white-space: nowrap;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .glass{
@@ -93,16 +94,23 @@ body::after {
   padding: 14px 20px;
   border-radius: 12px;
   color: var(--color-input-text);
+
   outline: none;
   transition: border-color 0.3s ease;
-  border: 2px solid transparent;
-
-  &:focus {
-    border-color: var(--color-input-text);
-  }
+  border: 2px solid var(--color-input-text);
 
   &::placeholder {
     color: var(--color-input-text);
+  }
+
+  &:focus::placeholder {
+    color: var(--color-input-placeholder);
+    font-size: 1rem;
+  }
+
+  &:focus {
+    color: var(--color-input-placeholder);
+    background-color: var(--color-input-text);
   }
 }
 
@@ -209,5 +217,85 @@ body::after {
   &:hover {
     background: var(--color-input-text);
     color: var(--color-input-placeholder);
+  }
+}
+
+.loading{
+  text-align: center;
+  padding: 4rem 0;
+  color: var(--color-grey);
+  font-size: 1.1rem;
+}
+
+.card-news {
+  width: clamp(300px, 90vw, 1050px);
+  margin: 0 auto;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+
+  &__img {
+    display: flex;
+    justify-content: center;
+    padding: 0 2rem 2rem;
+
+    img {
+      position: relative;
+      object-fit: cover;
+      border-radius: 1rem;
+    }
+  }
+
+  &__date{
+    &-subtitle{
+      padding: 2rem;
+      text-align: left;
+      font-size: 0.9rem;
+      color: var(--color-grey);
+    }
+  }
+
+  &__info {
+    width: 100%;
+
+    &-title {
+      text-align: left;
+      overflow-wrap: break-word;
+      white-space: normal;
+      min-width: 0;
+      margin: 0;
+      padding: 0 2rem 2rem;
+      font-size: 1.5rem;
+    }
+  }
+
+  .text-markdown{
+    padding: 0 2rem 2rem;
+  }
+
+  @media (max-width: 768px) {
+    &__date-subtitle {
+      padding: 1.5rem 1.2rem;
+      font-size: 0.85rem;
+    }
+
+    &__info-title {
+      padding: 0 1.2rem 1.5rem;
+      font-size: 1.1rem;
+    }
+
+    &__img {
+      padding: 0 1.2rem 1.5rem;
+    }
+
+    &__button {
+      padding-bottom: 1.5rem;
+    }
+
+    .text-markdown{
+      padding: 0 1.2rem 1.2rem;
+    }
   }
 }

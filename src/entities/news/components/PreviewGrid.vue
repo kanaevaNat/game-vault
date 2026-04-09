@@ -39,22 +39,18 @@ defineProps({
 .preview-grid {
   max-width: 1300px;
   margin: 0 auto;
-  padding-inline: 2rem;
   &__status {
     text-align: center;
     padding: 4rem 0;
     color: var(--color-grey);
     font-size: 1.1rem;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 1rem;
-    border: 1px dashed var(--color-border);
   }
 
   &__container {
     display: grid;
     gap: 2rem;
     width: 100%;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
   }
 }
 </style>
