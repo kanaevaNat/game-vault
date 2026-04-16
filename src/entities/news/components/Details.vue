@@ -74,19 +74,5 @@ onMounted(async () => {
 .recommendations{
   width: clamp(300px, 90vw, 1050px);
   margin: 0 auto;
-  padding-block: 4rem;
-
-  &__title{
-    font-size: 1.5rem;
-    margin: 0 0 1.5rem 0;
-    color: var(--color-input-text);
-  }
-  @media (max-width: 800px) {
-    padding-block: 2rem;
-    &__title{
-      font-size: 1.2rem;
-      margin: 0 0 1rem 0;
-    }
-  }
 }
 </style>

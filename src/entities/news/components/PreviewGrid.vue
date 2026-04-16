@@ -51,6 +51,10 @@ defineProps({
     gap: 2rem;
     width: 100%;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+
+    @media (max-width: 800px) {
+      gap: 1rem;
+    }
   }
 }
 </style>

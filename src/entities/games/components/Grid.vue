@@ -39,7 +39,7 @@ defineProps({
 
   &__grid{
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 300px));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 285px));
     gap: 2rem;
     justify-content: center;
     align-items: stretch;

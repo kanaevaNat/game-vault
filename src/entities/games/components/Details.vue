@@ -2,6 +2,7 @@
 import {useGameStore} from "@/entities/games/store.js";
 import {useRoute} from "vue-router";
 import {computed, onMounted} from "vue";
+import Grid from "@/entities/games/components/Grid.vue";
 
 import steamIcon from '@/shared/icons/Steam.svg';
 import epicIcon from '@/shared/icons/EpicGames.svg';
@@ -12,9 +13,21 @@ const gameId = computed(() => route.params.id);
 
 const game = computed(() => gameStore.findItemById(gameId.value));
 
+const recommendations = computed(() => {
+  if (!game.value || !gameStore.items.length) return [];
+  const currenStudioId = game.value.studio_details?.id;
+  if (!currenStudioId) return [];
+  return gameStore.items
+      .filter(g => g.studio_details?.id === currenStudioId && g.id !== game.value.id)
+      .slice(0, 4);
+})
+
 onMounted(async () => {
   if (!game.value) {
     await gameStore.fetchItemById(gameId.value);
+  }
+  if (gameStore.items.length === 0) {
+    await gameStore.fetchItems();
   }
 });
 
@@ -128,12 +141,19 @@ const storeConfig = {
       <h2 class="description-title">Описание</h2>
       <VueMarkdown :source="cleanDescription" class="text-markdown"/>
     </div>
+
+    <section v-if="recommendations.length" class="recommendations">
+      <h2 class="recommendations__title">
+        Другие игры от {{ game.studio_details?.name || 'разработчика' }}
+      </h2>
+      <Grid :games="recommendations" :loading="false" />
+    </section>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .game-page {
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
   @include header-padding(4rem);
   padding-bottom: 4rem;
@@ -172,6 +192,7 @@ const storeConfig = {
     .description-title {
       font-size: 1.5rem;
       margin: 0 0 1.5rem 0;
+      color: var(--color-input-text);
     }
 
     .description-text {

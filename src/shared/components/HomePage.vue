@@ -68,7 +68,7 @@ onMounted(() => {
   padding-bottom: 4rem;
   max-width: 1300px;
   margin: 0 auto;
-
+  padding-inline: 2rem;
 
   &__header{
     display: flex;
@@ -100,9 +100,9 @@ onMounted(() => {
   }
 }
 
-@media (max-width: 1350px) {
+@media (max-width: 800px) {
   .home-page {
-    padding-inline: 2rem;
+    padding-inline: 1rem;
   }
 }
 </style>

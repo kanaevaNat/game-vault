@@ -121,7 +121,7 @@ export const useGameStore = defineStore('game', {
                 }
             },
         ],
-        pagination: { page: 1, perPage: 1 },
+        pagination: { page: 1, perPage: 8 },
     }),
     getters: {
         filteredGames: (state) => {

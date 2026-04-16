@@ -62,9 +62,17 @@ onBeforeUnmount(() => document.removeEventListener('click', handleClickOutside))
 <template>
   <div class="filter-wrapper">
     <div class="filter">
-      <label class="filter__label">{{ label }}
-        <button v-if="selectedItems.length > 0" @click="clear" class="filter__clear">✕</button>
-      </label>
+      <div class="filter__header">
+        <label class="filter__label">{{ label }}</label>
+        <button
+            v-if="selectedItems.length > 0"
+            type="button"
+            @click.stop="clear"
+            class="filter__clear"
+        >
+          ✕
+        </button>
+      </div>
 
       <div class="filter__container">
         <div class="selected-tags">
@@ -175,6 +183,13 @@ onBeforeUnmount(() => document.removeEventListener('click', handleClickOutside))
         }
       }
     }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
   }
 }
 </style>

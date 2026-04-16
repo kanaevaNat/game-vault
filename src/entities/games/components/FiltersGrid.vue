@@ -40,6 +40,7 @@ const updateFilter = (key, value) => {
 </script>
 
 <template>
+  <div class="page-wrapper">
   <div class="filters-grid">
     <FilterSelect
         v-model="modelValue.studios"
@@ -70,20 +71,21 @@ const updateFilter = (key, value) => {
         @update:model-value="updateFilter('year', $event)"
     />
   </div>
+  </div>
 </template>
 
 <style scoped lang="scss">
 .filters-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
+  gap: 2rem;
   max-width: 1300px;
   margin: 0 auto;
-  padding: 0 2rem;
   position: relative;
   z-index: 10;
   background-color: transparent;
   border-radius: 1rem;
+  padding-block: 2rem;
 
   &::before {
     content: '';
@@ -100,7 +102,7 @@ const updateFilter = (key, value) => {
 @media (max-width: 768px) {
   .filters-grid {
     grid-template-columns: 1fr;
-    padding: 0 1rem;
+
   }
 }
 </style>
