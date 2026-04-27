@@ -1,5 +1,6 @@
 <script setup>
 import {computed, ref, onMounted, onBeforeUnmount} from 'vue';
+import Icon from "@/shared/icons/Icon.vue";
 
 const props = defineProps({
   modelValue: {type: Array, default: () => []},
@@ -68,9 +69,8 @@ onBeforeUnmount(() => document.removeEventListener('click', handleClickOutside))
             v-if="selectedItems.length > 0"
             type="button"
             @click.stop="clear"
-            class="filter__clear"
         >
-          ✕
+          <Icon name="close" :size="24" class="filter__clear" />
         </button>
       </div>
 
@@ -138,12 +138,11 @@ onBeforeUnmount(() => document.removeEventListener('click', handleClickOutside))
       display: inline-block;
       position: relative;
       width: 100%;
-      max-width: 360px;
 
       .search-input {
         display: block;
         position: relative;
-        max-width: 250px;
+        width: 100%;
         height: 3rem;
 
         &__is-open {
@@ -163,7 +162,7 @@ onBeforeUnmount(() => document.removeEventListener('click', handleClickOutside))
 
       .options {
         position: relative;
-        max-width: 250px;
+        width: 100%;
 
         .option-item {
           cursor: pointer;
@@ -183,13 +182,6 @@ onBeforeUnmount(() => document.removeEventListener('click', handleClickOutside))
         }
       }
     }
-  }
-
-  &__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
   }
 }
 </style>

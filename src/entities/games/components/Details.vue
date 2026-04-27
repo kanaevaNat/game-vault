@@ -153,12 +153,6 @@ const storeConfig = {
 
 <style lang="scss" scoped>
 .game-page {
-  max-width: 1300px;
-  margin: 0 auto;
-  @include header-padding(4rem);
-  padding-bottom: 4rem;
-  padding-inline: 2rem;
-
   &__top {
     display: grid;
     grid-template-columns: 300px 1fr 330px;
@@ -299,8 +293,6 @@ const storeConfig = {
 
 @media (max-width: 1010px) {
   .game-page {
-    padding-inline: 1rem;
-
     &__top {
       display: flex;
       flex-direction: column;
@@ -353,6 +345,7 @@ const storeConfig = {
     }
 
     &__description {
+      padding-top: 2rem;
       grid-column: 1;
       grid-row: auto;
     }

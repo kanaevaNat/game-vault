@@ -34,15 +34,18 @@ defineProps({
 
 <style lang="scss" scoped>
 .page {
-  max-width: 1300px;
-  margin: 0 auto;
+  width: 100%;
 
   &__grid{
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 285px));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 300px));
     gap: 2rem;
     justify-content: center;
     align-items: stretch;
+
+    @media (max-width: 800px) {
+      gap: 1rem;
+    }
   }
 }
 </style>

@@ -57,10 +57,16 @@ onBeforeUnmount(() => document.removeEventListener('click', handleClickOutside))
 <template>
   <div class="filter-wrapper" ref="filterRef">
     <div class="filter">
-      <label class="filter__label">
-        {{ label }}
-        <button v-if="modelValue.min || modelValue.max" @click="clear" class="filter__clear">✕</button>
-      </label>
+      <div class="filter__header">
+        <label class="filter__label">{{ label }}</label>
+        <button
+            v-if="modelValue.min || modelValue.max"
+            type="button"
+            @click.stop="clear"
+        >
+          <Icon name="close" :size="24" class="filter__clear" />
+        </button>
+      </div>
 
       <div class="filter__inputs">
         <div class="year-dropdown">
@@ -139,7 +145,7 @@ onBeforeUnmount(() => document.removeEventListener('click', handleClickOutside))
 .search-input {
   display: flex;
   position: relative;
-  max-width: 200px;
+  width: 100%;
   flex: 1;
   justify-content: space-between;
   height: 3rem;

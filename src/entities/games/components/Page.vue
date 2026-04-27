@@ -76,7 +76,6 @@ onMounted(() => {
       <Search
           :model-value="gameStore.searchQuery"
           @update:model-value="gameStore.searchQuery = $event"
-          class="search"
       />
 
       <div class="filter-buttons">
@@ -169,38 +168,13 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .page {
-  padding-bottom: 4rem;
 
   .filters-controls {
-    @include header-padding(4rem);
-    display: grid;
-    grid-template-columns: minmax(200px, 560px) auto;
     gap: 2rem;
-    justify-content: center;
-    align-items: stretch;
     padding-inline: 3.5rem 1rem;
 
-    .search, .filter-buttons{
-      margin-bottom: 4rem;
-    }
-
-    .filter-buttons {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      flex-shrink: 0;
-
-      .reset-btn {
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.3s ease, transform 0.3s ease;
-
-        &--visible {
-          opacity: 1;
-          pointer-events: auto;
-          transform: scale(1);
-        }
-      }
+    .search, .filter-buttons {
+      margin-bottom: 2rem;
     }
   }
 
@@ -212,15 +186,23 @@ onMounted(() => {
 
 .slide-enter-active,
 .slide-leave-active {
-  transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease;
+  /* 🔑 Анимируем высоту и padding синхронно */
+  transition:
+      max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+      padding-top 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+      padding-bottom 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.3s ease;
+
+  max-height: 700px; /* ✅ Запас под 2-3 строки фильтров на мобильном */
+  overflow: hidden;
 }
 
 .slide-enter-from,
 .slide-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
   max-height: 0;
-  overflow: hidden;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .pagination {
@@ -294,11 +276,15 @@ onMounted(() => {
 @media (max-width: 800px) {
   .page{
     .filters-controls {
-      gap: 0.5rem;
-      padding-inline: 3.5rem 0.5rem;
-      .search, .filter-buttons{
+      padding-inline: 3.5rem 1.5rem;
+
+      .search, .filter-buttons {
         margin-bottom: 1rem;
       }
+    }
+
+    .game-grid {
+      margin-top: 1.5rem;
     }
   }
   .pagination {
