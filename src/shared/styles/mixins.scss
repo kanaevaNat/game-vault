@@ -59,3 +59,11 @@
     padding-top: calc(var(--header-mobile-height) + #{$extra} / 2);
   }
 }
+
+@mixin footer-padding($extra: 0) {
+  padding-bottom:  #{$extra};
+
+  @media (max-width: 800px) {
+    padding-bottom: calc(#{$extra} / 2);
+  }
+}

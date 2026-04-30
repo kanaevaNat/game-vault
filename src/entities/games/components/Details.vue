@@ -3,9 +3,7 @@ import {useGameStore} from "@/entities/games/store.js";
 import {useRoute} from "vue-router";
 import {computed, onMounted} from "vue";
 import Grid from "@/entities/games/components/Grid.vue";
-
-import steamIcon from '@/shared/icons/Steam.svg';
-import epicIcon from '@/shared/icons/EpicGames.svg';
+import Icon from "@/shared/icons/Icon.vue";
 
 const route = useRoute();
 const gameStore = useGameStore();
@@ -59,8 +57,8 @@ const cleanDescription = computed(() => {
 });
 
 const storeConfig = {
-  steam: {icon: steamIcon, label: 'Купить в Steam'},
-  epic: {icon: epicIcon, label: 'Купить в Epic Games'},
+  steam: {icon: 'steam', label: 'Купить в Steam'},
+  epic: {icon: 'epic', label: 'Купить в Epic Games'},
 };
 </script>
 
@@ -127,10 +125,11 @@ const storeConfig = {
               target="_blank"
               rel="noopener noreferrer"
           >
-            <img
-                :src="storeConfig[link.store]?.icon"
-                :alt="storeConfig[link.store]?.label"
+            <Icon
+                :name="storeConfig[link.store]?.icon"
+                :size="24"
                 class="links-block__button-icon"
+                :aria-label="storeConfig[link.store]?.label"
             />
             <span class="links-block__button-label">{{ storeConfig[link.store]?.label }}</span>
           </a>
@@ -227,9 +226,11 @@ const storeConfig = {
         &-icon {
           width: 24px;
           height: 24px;
-          object-fit: contain;
           flex-shrink: 0;
           color: #FFFFFF;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
         }
 
         &-label {

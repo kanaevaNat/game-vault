@@ -37,8 +37,6 @@ defineProps({
 
 <style lang="scss" scoped>
 .preview-grid {
-  max-width: 1300px;
-  margin: 0 auto;
   &__status {
     text-align: center;
     padding: 4rem 0;

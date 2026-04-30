@@ -50,7 +50,10 @@ const router = createRouter(
                     {
                         path: '/admin',
                         name: 'admin',
-                        meta: { hideFooter: true },
+                        meta: {
+                            hideFooter: true,
+                            fullWidth: true
+                        },
                         component: () => import('@/entities/admin/components/AdminView.vue'),
                         children: [
                             {

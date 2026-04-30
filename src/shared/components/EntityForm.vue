@@ -304,6 +304,7 @@ const submit = async () => {
 }
 
 .entity-form{
+  @include header-margin;
   &__title{
     margin: 20px 0 20px 25px;
     font-size: 1.3rem;

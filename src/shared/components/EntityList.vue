@@ -42,15 +42,7 @@ const handleCloseForm = () => {
 <template>
   <div class="entity-list">
     <div class="entity-list__header">
-      <h2>{{ title }}</h2>
-      <v-btn
-          color="primary"
-          prepend-icon="mdi-plus"
-          @click="handleCreate"
-          class="ml-2"
-      >
-        Добавить
-      </v-btn>
+      <h2 class="header__title">{{ title }}</h2>
 
       <v-text-field
           v-model="search"
@@ -60,17 +52,27 @@ const handleCloseForm = () => {
           single-line
           variant="solo"
           density="compact"
-          class="search-field"
+          class="header__search"
       />
 
       <v-btn
-          v-if="search || sortBy?.length"
+          v-show="search || sortBy?.length"
           prepend-icon="mdi-refresh"
           variant="text"
           color="grey"
           @click="resetTableState"
-          class="ml-2"
-      >Сбросить
+          class="header__reset"
+      >
+        Сбросить
+      </v-btn>
+
+      <v-btn
+          color="primary"
+          prepend-icon="mdi-plus"
+          @click="handleCreate"
+          class="header__add"
+      >
+        Добавить
       </v-btn>
     </div>
 
@@ -100,9 +102,20 @@ const handleCloseForm = () => {
   &__header {
     display: grid;
     grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "title reset"
+      "search add";
+    gap: 0.5rem 1rem;
     align-items: center;
-    gap: 1rem;
     margin-bottom: 1rem;
   }
 }
+
+.header__title { grid-area: title; }
+.header__add   { grid-area: add; }
+.header__search {
+  grid-area: search;
+  min-width: 0;
+}
+.header__reset { grid-area: reset; }
 </style>

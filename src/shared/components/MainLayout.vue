@@ -9,7 +9,7 @@ const route = useRoute();
 <template>
   <div class="layout-wrapper">
     <Header />
-    <main class="layout-main">
+    <main class="layout-main" :class="{ 'width-page': !route.meta.fullWidth }">
       <router-view />
     </main>
     <Footer v-if="!route.meta.hideFooter" />
@@ -26,6 +26,5 @@ const route = useRoute();
 
 .layout-main {
   flex: 1;
-  width: 100%;
 }
 </style>

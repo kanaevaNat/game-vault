@@ -169,7 +169,7 @@ const submitSubscription = async () => {
   height: 3rem;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 800px) {
   .newsletter{
     padding-block: 2rem;
     .newsletter__form {

@@ -61,15 +61,6 @@ onMounted(async () => {
 <style lang="scss" scoped>
 .card-wrapper {
   position: relative;
-  @include header-padding(4rem);
-  padding-bottom: 4rem;
-  padding-inline: 2rem;
-
-  @media (max-width: 800px) {
-    @include header-padding(2rem);
-    padding-inline: 1rem;
-    padding-bottom: 2rem;
-  }
 }
 .recommendations{
   width: clamp(300px, 90vw, 1050px);

@@ -2,6 +2,7 @@
 import { useNewsStore } from "@/entities/news/store.js";
 import { useGameStore } from "@/entities/games/store.js";
 import { computed, onMounted } from "vue";
+import HomeInformation from "@/shared/components/HomeInformation.vue";
 import PreviewGrid from "@/entities/news/components/PreviewGrid.vue";
 import Grid from "@/entities/games/components/Grid.vue";
 import EmailSubscribeForm from "@/shared/components/EmailSubscribeForm.vue";
@@ -27,7 +28,7 @@ onMounted(() => {
 
 <template>
   <div class="home-page">
-
+    <HomeInformation />
     <div class="home-page__header">
       <h1
           class="home-page__title"
@@ -64,12 +65,6 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .home-page {
-  @include header-padding(4rem);
-  padding-bottom: 4rem;
-  max-width: 1300px;
-  margin: 0 auto;
-  padding-inline: 2rem;
-
   &__header{
     display: flex;
     align-items: center;
@@ -97,12 +92,6 @@ onMounted(() => {
       align-content: center;
       width: 20rem;
     }
-  }
-}
-
-@media (max-width: 800px) {
-  .home-page {
-    padding-inline: 1rem;
   }
 }
 </style>
