@@ -78,8 +78,9 @@ onMounted(() => {
 
   &__title{
     @include neon-outline-text($color-pink-lite);
-    font-size: 3rem;
+    font-size: clamp(2.2rem, 5vw, 3rem);
     text-wrap: wrap;
+    text-align: center;
   }
   .icon-wrapper{
     display: flex;
