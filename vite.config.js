@@ -22,5 +22,9 @@ export default defineConfig({
                 silenceDeprecations: ['import']
             }
         }
-    }
+    },
+    test: {
+        environment: 'jsdom',
+        globals: true,
+    },
 })
